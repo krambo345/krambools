@@ -76,12 +76,17 @@ function initwindow(win) {
   dragElement(win);
 }
 
-function injectStylesheet() {
+async function injectStylesheet() {
   if (document.querySelector('link[data-krambools]')) return;
+  const response = await fetch(
+    "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css",
+  );
+  const css = await response.text();
+  const blob = new Blob([css], { type: "text/css" });
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.dataset.krambools = "true";
-  link.href = "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css";
+  link.href = URL.createObjectURL(blob);
   document.head.appendChild(link);
 }
 
@@ -95,8 +100,8 @@ window.minimwin = minimwin;
 window.closewin = closewin;
 window.initwindow = initwindow;
 
-export function app() {
-  injectStylesheet();
+export async function app() {
+  await injectStylesheet();
 
   // Wire up any .win elements already in the DOM.
   document.querySelectorAll(".win").forEach(initwindow);
