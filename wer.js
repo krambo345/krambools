@@ -2,7 +2,7 @@
 export function app() {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://github.com/krambo345/krambools/raw/refs/heads/master/krambools.css";
+    link.href = "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css";
     document.head.appendChild(link);
     let zlast = 1;
     function insertFunctions(win) {
