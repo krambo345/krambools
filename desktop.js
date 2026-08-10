@@ -63,10 +63,11 @@ export async function kill() {
 export function commands() {
   return {
     hello: {
-      args: "<string>",
-      description: "Print Hello Name",
-      run: async ([name]) => 
-          `Hello ${name}!`
+      args: "<name>",
+      description: "Say hello",
+      run: async ([name]) => {
+        return `Hello ${name}!`;
+      },
     },
   };
 }
