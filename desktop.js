@@ -31,13 +31,13 @@ function buildIcon(pkg) {
   icon.innerHTML = `<img src="icons/${pkg.icon}.png"><span>${pkg.name}</span>`;
 
   icon.addEventListener("dblclick", async () => {
-    try{
+    try {
       await kernel.packer.start(pkg.id);
     }
-    catch (error){
+    catch (error) {
       kernel.system.log(error, "error")
     }
-    
+
   });
 
   return icon;
@@ -66,7 +66,7 @@ export function commands() {
       args: "<name>",
       description: "Say hello",
       run: async ([name]) => {
-        console.log(`Hello ${name}!`);
+          return `Hello ${name}!`;
       },
     },
   };
