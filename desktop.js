@@ -28,7 +28,7 @@ async function fetchPackages() {
 function buildIcon(pkg) {
   const icon = document.createElement("div");
   icon.className = "desktop-icon";
-  icon.innerHTML = `<img src="/icons/${pkg.icon}.png"><span>${pkg.name}</span>`;
+  icon.innerHTML = `<img src="icons/${pkg.icon}.png"><span>${pkg.name}</span>`;
 
   icon.addEventListener("dblclick", async () => {
     const started = await kernel.packer.start(pkg.id);
