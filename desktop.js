@@ -1,5 +1,4 @@
 const display = document.querySelector(".display");
-let activeInterval = null;
 
 function getKernel() {
   return window.modOS?.kernel;
@@ -62,6 +61,11 @@ function buildIcon(pkg) {
 }
 
 export async function app() {
+  const kernel = getKernel();
+  if (kernel && kernel.terminal) {
+    await kernel.terminal.kill();
+  }
+
   await injectCSS();
 
   if (display) {
@@ -69,6 +73,7 @@ export async function app() {
   }
   
   const pckgs = await fetchPackages();
+  
   const fragment = document.createDocumentFragment();
   pckgs.forEach((pkg) => {
     if (!pkg.id) return;
@@ -83,11 +88,6 @@ export async function app() {
 }
 
 export async function kill() {
-  if (activeInterval) {
-    clearInterval(activeInterval);
-    activeInterval = null;
-  }
-
   if (display) {
     display.replaceChildren();
   }
@@ -99,7 +99,6 @@ export async function kill() {
 
   return true;
 }
-
 export function commands() {
   return {
     desktop: {
