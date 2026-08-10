@@ -35,9 +35,8 @@ function buildIcon(pkg) {
       await kernel.packer.start(pkg.id);
     }
     catch (error) {
-      kernel.system.log(error, "error")
+      kernel.system.log(error, "error");
     }
-
   });
 
   return icon;
@@ -60,14 +59,13 @@ export async function kill() {
   display.replaceChildren();
   return true;
 }
+
 export function commands() {
   return {
     hello: {
-      args: "<name>",
-      description: "Say hello",
-      run: async ([name]) => {
-        return `Hello ${name}!`;
-      },
+      args: "<string>",
+      description: "Print Hello Name",
+      run: async ([name]) => `Hello ${name || "World"}!`
     },
   };
 }
