@@ -14,7 +14,7 @@ html, body{
     font-family: "Fira Code", monospace;
     overflow:hidden;
 }
-.displat{
+.display{
     background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.jpg");
     background-size: cover;
     background-repeat: no-repeat;
