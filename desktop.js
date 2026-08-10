@@ -1,8 +1,5 @@
+const kernel = window.modOS.kernel;
 const display = document.querySelector(".display");
-
-function getKernel() {
-  return window.modOS?.kernel;
-}
 
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
@@ -24,11 +21,9 @@ async function injectCSS() {
 
 async function fetchPackages() {
   try {
-    const kernel = getKernel();
     const pckgs = kernel ? await kernel.packer.fetch() : [];
     return Array.isArray(pckgs) ? pckgs : [];
   } catch (error) {
-    const kernel = getKernel();
     if (kernel) await kernel.system.log(error, "error");
     return [];
   }
@@ -49,10 +44,8 @@ function buildIcon(pkg) {
 
   icon.addEventListener("dblclick", async () => {
     try {
-      const kernel = getKernel();
       if (kernel) await kernel.packer.start(pkg.id);
     } catch (error) {
-      const kernel = getKernel();
       if (kernel) kernel.system.log(error, "error");
     }
   });
@@ -61,10 +54,11 @@ function buildIcon(pkg) {
 }
 
 export async function app() {
-  const kernel = getKernel();
-
   await injectCSS();
-  display.replaceChildren();
+
+  if (display) {
+    display.replaceChildren();
+  }
   
   const pckgs = await fetchPackages();
   
@@ -93,6 +87,7 @@ export async function kill() {
 
   return true;
 }
+
 export function commands() {
   return {
     desktop: {
