@@ -1,5 +1,8 @@
-const kernel = window.modOS.kernel;
 const display = document.querySelector(".display");
+
+function getKernel() {
+  return window.modOS?.kernel;
+}
 
 async function injectCSS() {
   if (document.querySelector('link[data-krambools]')) return;
@@ -17,10 +20,12 @@ async function injectCSS() {
 
 async function fetchPackages() {
   try {
-    const pckgs = await kernel.packer.fetch();
+    const kernel = getKernel();
+    const pckgs = kernel ? await kernel.packer.fetch() : [];
     return Array.isArray(pckgs) ? pckgs : [];
   } catch (error) {
-    await kernel.system.log(error, "error");
+    const kernel = getKernel();
+    if (kernel) await kernel.system.log(error, "error");
     return [];
   }
 }
@@ -32,10 +37,11 @@ function buildIcon(pkg) {
 
   icon.addEventListener("dblclick", async () => {
     try {
-      await kernel.packer.start(pkg.id);
-    }
-    catch (error) {
-      kernel.system.log(error, "error");
+      const kernel = getKernel();
+      if (kernel) await kernel.packer.start(pkg.id);
+    } catch (error) {
+      const kernel = getKernel();
+      if (kernel) kernel.system.log(error, "error");
     }
   });
 
@@ -45,10 +51,10 @@ function buildIcon(pkg) {
 export async function app() {
   await injectCSS();
 
-  display.replaceChildren();
+  if (display) display.replaceChildren();
   const pckgs = await fetchPackages();
   pckgs.forEach((pkg) => {
-    if (!pkg.id) return;
+    if (!pkg.id || !display) return;
     display.appendChild(buildIcon(pkg));
   });
 
@@ -56,7 +62,7 @@ export async function app() {
 }
 
 export async function kill() {
-  display.replaceChildren();
+  if (display) display.replaceChildren();
   return true;
 }
 
@@ -65,7 +71,7 @@ export function commands() {
     hello: {
       args: "<string>",
       description: "Print Hello Name",
-      run: async ([name]) => `Hello ${name || "World"}!`
+      run: async ([name]) => `Hello ${name || "World"}!`,
     },
   };
 }
