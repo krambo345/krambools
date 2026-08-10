@@ -1,21 +1,26 @@
 const display = document.querySelector(".display");
+let activeInterval = null;
 
 function getKernel() {
   return window.modOS?.kernel;
 }
 
 async function injectCSS() {
-  if (document.querySelector('link[data-krambools]')) return;
-  const response = await fetch(
-    "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css",
-  );
-  const css = await response.text();
-  const blob = new Blob([css], { type: "text/css" });
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.dataset.krambools = "true";
-  link.href = URL.createObjectURL(blob);
-  document.head.appendChild(link);
+  if (document.querySelector('style[data-krambools]')) return;
+
+  try {
+    const response = await fetch(
+      "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
+    );
+    const css = await response.text();
+    
+    const style = document.createElement("style");
+    style.dataset.krambools = "true";
+    style.textContent = css;
+    document.head.appendChild(style);
+  } catch (error) {
+    console.error("Failed to inject desktop CSS:", error);
+  }
 }
 
 async function fetchPackages() {
@@ -33,7 +38,15 @@ async function fetchPackages() {
 function buildIcon(pkg) {
   const icon = document.createElement("div");
   icon.className = "desktop-icon";
-  icon.innerHTML = `<img src="icons/${pkg.icon}.png"><span>${pkg.name}</span>`;
+  
+  const img = document.createElement("img");
+  img.src = `icons/${pkg.icon}.png`;
+  
+  const label = document.createElement("span");
+  label.textContent = pkg.name;
+
+  icon.appendChild(img);
+  icon.appendChild(label);
 
   icon.addEventListener("dblclick", async () => {
     try {
@@ -51,27 +64,49 @@ function buildIcon(pkg) {
 export async function app() {
   await injectCSS();
 
-  if (display) display.replaceChildren();
+  if (display) {
+    display.replaceChildren();
+  }
+  
   const pckgs = await fetchPackages();
+  const fragment = document.createDocumentFragment();
   pckgs.forEach((pkg) => {
-    if (!pkg.id || !display) return;
-    display.appendChild(buildIcon(pkg));
+    if (!pkg.id) return;
+    fragment.appendChild(buildIcon(pkg));
   });
+
+  if (display) {
+    display.appendChild(fragment);
+  }
 
   return true;
 }
 
 export async function kill() {
-  if (display) display.replaceChildren();
+  if (activeInterval) {
+    clearInterval(activeInterval);
+    activeInterval = null;
+  }
+
+  if (display) {
+    display.replaceChildren();
+  }
+  
+  const styleTag = document.querySelector('style[data-krambools]');
+  if (styleTag) {
+    styleTag.remove();
+  }
+
   return true;
 }
 
 export function commands() {
   return {
-    hello: {
-      args: "<string>",
-      description: "Print Hello Name",
-      run: async ([name]) => `Hello ${name || "World"}!`,
+    desktop: {
+      args: "<arg>",
+      description: "Refresh Desktop",
+      run: async ([name]) => 
+        await app()
     },
   };
 }
