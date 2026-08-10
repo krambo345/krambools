@@ -9,12 +9,15 @@ html, body{
     margin: 0;
     padding: 0;
     background-color: #1a1a1a;
-    background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
+    
     color: #fff;
     font-family: "Fira Code", monospace;
     overflow:hidden;
+}
+.displat{
+    background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .interface{
     position: relative;
