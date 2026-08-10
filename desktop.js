@@ -62,15 +62,9 @@ function buildIcon(pkg) {
 
 export async function app() {
   const kernel = getKernel();
-  if (kernel && kernel.terminal) {
-    await kernel.terminal.kill();
-  }
 
   await injectCSS();
-
-  if (display) {
-    display.replaceChildren();
-  }
+  display.replaceChildren();
   
   const pckgs = await fetchPackages();
   
