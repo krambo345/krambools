@@ -31,10 +31,13 @@ function buildIcon(pkg) {
   icon.innerHTML = `<img src="icons/${pkg.icon}.png"><span>${pkg.name}</span>`;
 
   icon.addEventListener("dblclick", async () => {
-    const started = await kernel.packer.start(pkg.id);
-    if (!started) {
-      await kernel.system.log(`Failed to start ${pkg.id}`, "error");
+    try{
+      await kernel.packer.start(pkg.id);
     }
+    catch (error){
+      kernel.system.log(error, "error")
+    }
+    
   });
 
   return icon;
