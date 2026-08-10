@@ -60,3 +60,14 @@ export async function kill() {
   display.replaceChildren();
   return true;
 }
+export function commands() {
+  return {
+    hello: {
+      args: "<name>",
+      description: "Say hello",
+      run: async ([name]) => {
+        console.log(`Hello ${name}!`);
+      },
+    },
+  };
+}
