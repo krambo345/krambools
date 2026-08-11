@@ -19,7 +19,7 @@ export async function commands(){
                 test:{
                     arg:"<string>",
                     description:"Log text to system",
-                    run: async(text) =>
+                    run: async([text]) =>
                         kernel.system.log(text, "warn")
                 }
             }
