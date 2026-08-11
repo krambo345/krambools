@@ -32,7 +32,7 @@ function buildIcon(pkg) {
   const icon = document.createElement("div");
   icon.className = "desktop-icon";
   const img = document.createElement("img");
-  img.src = `/icons/${pkg.icon}.png`;
+  img.src = `${kernel.base}icons/${pkg.icon}.png`;
   const label = document.createElement("span");
   label.textContent = pkg.name;
 
@@ -42,6 +42,9 @@ function buildIcon(pkg) {
   icon.addEventListener("dblclick", async () => {
     try {
       if (!kernel) return;
+      // start() requires the package to already be installed — it doesn't
+      // auto-install. get() is a no-op if it's already cached, so it's
+      // always safe to call before start().
       await kernel.packer.get(pkg.id);
       const started = await kernel.packer.start(pkg.id);
       if (!started) {
