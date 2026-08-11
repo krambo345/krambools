@@ -87,14 +87,15 @@ function initwindow(win) {
   dragElement(win);
 }
 
-function createWindow(pckg) {
+async function createWindow(pckg) {
   const win = document.createElement("div");
-  const raw = kernel.packer.fetch(pckg)
-  const packageData = raw[pckg]
+  const pckgs = await kernel.packer.fetch();
+  const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === pckg) : null;
+
   win.className = "wer-win";
-  win.dataset.windowicon = packageData.icon;
-  win.dataset.windowname = packageData.name;
-  win.dataset.pckg = packageData;
+  win.dataset.windowicon = packageData ? packageData.icon : pckg;
+  win.dataset.windowname = packageData ? packageData.name : pckg;
+  win.dataset.pckg = pckg;
 
   const header = document.createElement("div");
   header.className = "wer-winheader";
@@ -174,7 +175,7 @@ export async function app(pckg) {
   });
 
   if (pckg) {
-    createWindow(pckg);
+    await createWindow(pckg);
   }
 
   return true;
@@ -202,7 +203,7 @@ export function commands() {
           args: "<pckg>",
           description: "Open a window for a package",
           run: async ([pckg]) => {
-            createWindow(pckg);
+            await createWindow(pckg);
             return true;
           },
         },
