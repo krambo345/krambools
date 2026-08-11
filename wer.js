@@ -1,3 +1,4 @@
+const kernel = window.modOS.kernel;
 let zlast = 1;
 let observer = null;
 const wired = new WeakSet();
@@ -7,7 +8,7 @@ function insertFunctions(win) {
 
   header.insertAdjacentHTML(
     "beforeend",
-    `<div class="wer-winl"><img src="/icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
+    `<div class="wer-winl"><img src="${kernel.base}icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", () => {
