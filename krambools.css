@@ -104,3 +104,6 @@ button:hover{
     text-align: center;
     word-break: normal;
 }
+.xterm-screen{
+    padding: 5px;
+}

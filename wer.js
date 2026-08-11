@@ -122,7 +122,7 @@ async function injectCSS() {
     style.textContent = css;
     document.head.appendChild(style);
   } catch (error) {
-    kernel.system.log(`Failed to inject prompt CSS: ${error}`, "error");
+    kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
 
