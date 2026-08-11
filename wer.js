@@ -89,6 +89,8 @@ function initwindow(win) {
 
 function createWindow(pckg) {
   const win = document.createElement("div");
+  const raw = kernel.packer.fetch(pckg)
+  const package = raw[pckg]
   win.className = "wer-win";
   win.dataset.windowicon = pckg.icon;
   win.dataset.windowname = pckg.name;
