@@ -1,7 +1,6 @@
 const kernel = window.modOS.kernel;
 let zlast = 1;
 let observer = null;
-const wired = new WeakSet();
 
 function insertFunctions(win) {
   const header = win.querySelector(".wer-winheader");
@@ -80,9 +79,9 @@ function dragElement(element) {
 }
 
 function initwindow(win) {
-  if (wired.has(win)) return;
+  if (win.dataset.werWired === "true") return;
 
-  wired.add(win);
+  win.dataset.werWired = "true";
   insertFunctions(win);
   dragElement(win);
 }
