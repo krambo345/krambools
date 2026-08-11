@@ -15,7 +15,7 @@ async function injectCSS() {
     style.textContent = css;
     document.head.appendChild(style);
   } catch (error) {
-    console.error("Failed to inject desktop CSS:", error);
+    kernel.system.log(`Failed to inject desktop CSS: ${error}`, "error");
   }
 }
 

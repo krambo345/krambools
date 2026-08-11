@@ -109,23 +109,21 @@ async function createWindow(pckg) {
   return win;
 }
 
-async function injectStylesheet() {
-  if (document.querySelector('link[data-krambools]')) return;
+async function injectCSS() {
+  if (document.querySelector('style[data-krambools]')) return;
 
-  const response = await fetch(
-    "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css",
-  );
-
-  const css = await response.text();
-
-  const blob = new Blob([css], { type: "text/css" });
-  const link = document.createElement("link");
-
-  link.rel = "stylesheet";
-  link.dataset.krambools = "true";
-  link.href = URL.createObjectURL(blob);
-
-  document.head.appendChild(link);
+  try {
+    const response = await fetch(
+      "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
+    );
+    const css = await response.text();
+    const style = document.createElement("style");
+    style.dataset.krambools = "true";
+    style.textContent = css;
+    document.head.appendChild(style);
+  } catch (error) {
+    kernel.system.log(`Failed to inject prompt CSS: ${error}`, "error");
+  }
 }
 
 export {
@@ -150,7 +148,7 @@ export async function app(pckg) {
     observer = null;
   }
 
-  await injectStylesheet();
+  await injectCSS();
 
   document.querySelectorAll(".wer-win").forEach(initwindow);
 
@@ -201,7 +199,7 @@ export function commands() {
         win: {
           args: "<pckg>",
           description: "Open a window for a package",
-          run: async ([pckg]) => {
+          run: async ([pckg, tags]) => {
             const win = await createWindow(pckg);
             return win
           },
