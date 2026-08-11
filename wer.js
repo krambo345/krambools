@@ -3,19 +3,19 @@ let observer = null;
 const wired = new WeakSet();
 
 function insertFunctions(win) {
-  const header = win.querySelector(".winheader");
+  const header = win.querySelector(".wer-winheader");
 
   header.insertAdjacentHTML(
     "beforeend",
-    `<div class="winl"><img src="/icons/${win.dataset.windowicon}.png" class="windowicon"></img><span>${win.dataset.windowname}</span></div><div class="winr"><button class="minimwin"></button><button class="closewin"></button></div>`,
+    `<div class="wer-winl"><img src="/icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
   );
 
-  header.querySelector(".minimwin").addEventListener("click", () => {
-    minimwin(header.closest(".win"));
+  header.querySelector(".wer-minimwin").addEventListener("click", () => {
+    minimwin(header.closest(".wer-win"));
   });
 
-  header.querySelector(".closewin").addEventListener("click", () => {
-    closewin(header.closest(".win"));
+  header.querySelector(".wer-closewin").addEventListener("click", () => {
+    closewin(header.closest(".wer-win"));
   });
 }
 
@@ -35,7 +35,7 @@ function closewin(e) {
 function dragElement(element) {
   windowz(element);
 
-  const header = element.querySelector(".winheader");
+  const header = element.querySelector(".wer-winheader");
 
   let initialX = 0;
   let initialY = 0;
@@ -86,6 +86,26 @@ function initwindow(win) {
   dragElement(win);
 }
 
+function createWindow(pckg) {
+  const win = document.createElement("div");
+  win.className = "wer-win";
+  win.dataset.windowicon = pckg;
+  win.dataset.windowname = pckg;
+  win.dataset.pckg = pckg;
+
+  const header = document.createElement("div");
+  header.className = "wer-winheader";
+  win.appendChild(header);
+
+  const content = document.createElement("div");
+  content.className = "wer-content";
+  win.appendChild(content);
+
+  document.body.appendChild(win);
+  initwindow(win);
+  return win;
+}
+
 async function injectStylesheet() {
   if (document.querySelector('link[data-krambools]')) return;
 
@@ -111,6 +131,7 @@ export {
   minimwin,
   closewin,
   initwindow,
+  createWindow,
 };
 
 window.insertFunctions = insertFunctions;
@@ -118,11 +139,9 @@ window.dragElement = dragElement;
 window.minimwin = minimwin;
 window.closewin = closewin;
 window.initwindow = initwindow;
+window.createWindow = createWindow;
 
-export async function app() {
-  // IMPORTANT:
-  // Prevent multiple MutationObservers from stacking up
-  // if the package is launched more than once.
+export async function app(pckg) {
   if (observer) {
     observer.disconnect();
     observer = null;
@@ -130,20 +149,18 @@ export async function app() {
 
   await injectStylesheet();
 
-  // Wire up existing windows.
-  document.querySelectorAll(".win").forEach(initwindow);
+  document.querySelectorAll(".wer-win").forEach(initwindow);
 
-  // Wire up newly-created windows.
   observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       for (const node of mutation.addedNodes) {
         if (!(node instanceof HTMLElement)) continue;
 
-        if (node.matches?.(".win")) {
+        if (node.matches?.(".wer-win")) {
           initwindow(node);
         }
 
-        node.querySelectorAll?.(".win").forEach(initwindow);
+        node.querySelectorAll?.(".wer-win").forEach(initwindow);
       }
     }
   });
@@ -152,6 +169,10 @@ export async function app() {
     childList: true,
     subtree: true,
   });
+
+  if (pckg) {
+    createWindow(pckg);
+  }
 
   return true;
 }
@@ -166,4 +187,23 @@ export function kill() {
   document.onmouseup = null;
 
   return true;
+}
+
+export function commands() {
+  return {
+    wer: {
+      args: "<command>",
+      description: "Window manager",
+      sub: {
+        win: {
+          args: "<pckg>",
+          description: "Open a window for a package",
+          run: async ([pckg]) => {
+            createWindow(pckg);
+            return true;
+          },
+        },
+      },
+    },
+  };
 }

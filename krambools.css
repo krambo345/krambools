@@ -1,50 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
-*{
-    transition: all 0.5s;
-    scrollbar-width: 50px;
-    scrollbar-color: red;
-}
-
-html, body{
-    margin: 0;
-    padding: 0;
-    background-color: #1a1a1a;
-    
-    color: #fff;
-    font-family: "Fira Code", monospace;
-    overflow:hidden;
-}
 .display{
     background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
     background-size: cover;
     background-repeat: no-repeat;
 }
-.interface{
-    position: relative;
-    width: 100vw;
-    min-height: 100vh;
-}
 button:hover{
     cursor: pointer;
 }
-.bartender{
-    display: flex;
-    justify-content:space-around;
-    background-color: #1a1a1adc;
-    backdrop-filter: blur(3px);
-    padding: 15px;
-}
-.clock{
-    display: flex;
-    flex-direction: row;
-}
-.clockl *{
-    margin: 3px;
-}
-.clockr{
-    margin-left: 18px;
-}
-.win{
+.wer-win{
     position: absolute;
     border: solid #0077ff 5px;
     background-color: #ffffff9a;
@@ -64,22 +26,22 @@ button:hover{
     transition: backdrop-filter, background-color 0.4s;
     color: #000;
 }
-.win:hover{
+.wer-win:hover{
     backdrop-filter: blur(0);
     background-color: #ffffff;
 }
-.winheader{
+.wer-winheader{
     align-items: center;
     height: 30px;
     background-color: #0077ff;
     color: #fff;
     display: flex;
 }
-.windowicon{
+.wer-windowicon{
     padding: 3px;
     height: 20px;
 }
-.minimwin{
+.wer-minimwin{
     border-radius: 10%;
     height:15px;
     width: 15px;
@@ -87,10 +49,10 @@ button:hover{
     border: none;
     background-color: #d1d100;
 }
-.minimwin:hover{
+.wer-minimwin:hover{
     background-color: #8a8a00;
 }
-.closewin{
+.wer-closewin{
     border-radius: 10%;
     height:15px;
     width: 30px;
@@ -99,15 +61,15 @@ button:hover{
     background-color: #d10000;
     margin-left: 3px;
 }
-.closewin:hover{
+.wer-closewin:hover{
     background-color: #8a0000;
 }
-.winl{
+.wer-winl{
     display: flex;
     justify-content: start;
     align-items: center;
 }
-.winr{
+.wer-winr{
     display: flex;
     justify-content: end;
     align-items: center;
@@ -140,32 +102,4 @@ button:hover{
     margin-top: 10px;
     text-align: center;
     word-break: normal;
-}
-.fira-code {
-  font-family: "Fira Code", monospace;
-  font-optical-sizing: auto;
-  font-weight: 300px;
-  font-style: normal;
-}
-::-webkit-scrollbar {
-    width: 12px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(26,26,26,.4);
-    backdrop-filter: blur(5px);
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(#0099ff,#0066ff);
-    border-radius: 999px;
-    border: 2px solid rgba(255,255,255,.15);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(#33aaff,#0088ff);
-}
-* {
-    scrollbar-width: 30px;
-    scrollbar-color: #0077ff transparent;
 }
