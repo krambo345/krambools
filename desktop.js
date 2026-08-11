@@ -32,7 +32,7 @@ function buildIcon(pkg) {
   const icon = document.createElement("div");
   icon.className = "desktop-icon";
   const img = document.createElement("img");
-  img.src = `/icons/${pkg.icon}.png`;
+  img.src = `modOS-VT/icons/${pkg.icon}.png`;
   const label = document.createElement("span");
   label.textContent = pkg.name;
 
