@@ -1,4 +1,5 @@
 const kernel = window.modOS.kernel;
+const structurePackages = window.modOS.variables.structurePackages;
 const display = document.querySelector(".display");
 
 async function injectCSS() {
@@ -15,16 +16,6 @@ async function injectCSS() {
     document.head.appendChild(style);
   } catch (error) {
     console.error("Failed to inject desktop CSS:", error);
-  }
-}
-
-async function fetchPackages() {
-  try {
-    const pckgs = kernel ? await kernel.packer.fetch() : [];
-    return Array.isArray(pckgs) ? pckgs : [];
-  } catch (error) {
-    if (kernel) await kernel.system.log(error, "error");
-    return [];
   }
 }
 
@@ -61,11 +52,17 @@ export async function app() {
   if (display) {
     display.replaceChildren();
   }
-  const pckgs = await fetchPackages();
+
+  const installed = await kernel.bino.dir.list(structurePackages);
+  const installedIds = Array.isArray(installed) ? installed : [];
+
+  const pckgs = installedIds.length ? await kernel.packer.fetch() : [];
   const fragment = document.createDocumentFragment();
-  pckgs.forEach((pkg) => {
-    if (!pkg.id) return;
-    fragment.appendChild(buildIcon(pkg));
+
+  installedIds.forEach((id) => {
+    const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
+    if (!packageData) return;
+    fragment.appendChild(buildIcon(packageData));
   });
 
   if (display) {
