@@ -203,8 +203,8 @@ export function commands() {
           args: "<pckg>",
           description: "Open a window for a package",
           run: async ([pckg]) => {
-            await createWindow(pckg);
-            return true;
+            const win = await createWindow(pckg);
+            return win
           },
         },
       },
