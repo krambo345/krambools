@@ -42,9 +42,6 @@ function buildIcon(pkg) {
   icon.addEventListener("dblclick", async () => {
     try {
       if (!kernel) return;
-      // start() requires the package to already be installed — it doesn't
-      // auto-install. get() is a no-op if it's already cached, so it's
-      // always safe to call before start().
       await kernel.packer.get(pkg.id);
       const started = await kernel.packer.start(pkg.id);
       if (!started) {

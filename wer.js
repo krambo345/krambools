@@ -90,8 +90,8 @@ function initwindow(win) {
 function createWindow(pckg) {
   const win = document.createElement("div");
   win.className = "wer-win";
-  win.dataset.windowicon = pckg;
-  win.dataset.windowname = pckg;
+  win.dataset.windowicon = pckg.icon;
+  win.dataset.windowname = pckg.name;
   win.dataset.pckg = pckg;
 
   const header = document.createElement("div");
