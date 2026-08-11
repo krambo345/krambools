@@ -9,7 +9,6 @@ async function injectCSS() {
       "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
     );
     const css = await response.text();
-    
     const style = document.createElement("style");
     style.dataset.krambools = "true";
     style.textContent = css;
@@ -32,10 +31,8 @@ async function fetchPackages() {
 function buildIcon(pkg) {
   const icon = document.createElement("div");
   icon.className = "desktop-icon";
-  
   const img = document.createElement("img");
-  img.src = `icons/${pkg.icon}.png`;
-  
+  img.src = `/icons/${pkg.icon}.png`;
   const label = document.createElement("span");
   label.textContent = pkg.name;
 
@@ -44,7 +41,15 @@ function buildIcon(pkg) {
 
   icon.addEventListener("dblclick", async () => {
     try {
-      if (kernel) await kernel.packer.start(pkg.id);
+      if (!kernel) return;
+      // start() requires the package to already be installed — it doesn't
+      // auto-install. get() is a no-op if it's already cached, so it's
+      // always safe to call before start().
+      await kernel.packer.get(pkg.id);
+      const started = await kernel.packer.start(pkg.id);
+      if (!started) {
+        await kernel.system.log(`Failed to start ${pkg.id}`, "error");
+      }
     } catch (error) {
       if (kernel) kernel.system.log(error, "error");
     }
@@ -59,9 +64,7 @@ export async function app() {
   if (display) {
     display.replaceChildren();
   }
-  
   const pckgs = await fetchPackages();
-  
   const fragment = document.createDocumentFragment();
   pckgs.forEach((pkg) => {
     if (!pkg.id) return;
@@ -79,7 +82,6 @@ export async function kill() {
   if (display) {
     display.replaceChildren();
   }
-  
   const styleTag = document.querySelector('style[data-krambools]');
   if (styleTag) {
     styleTag.remove();
@@ -93,8 +95,7 @@ export function commands() {
     desktop: {
       args: "<arg>",
       description: "Refresh Desktop",
-      run: async ([name]) => 
-        await app()
+      run: async () => await app(),
     },
   };
 }
