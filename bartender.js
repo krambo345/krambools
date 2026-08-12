@@ -71,10 +71,10 @@ export async function app() {
   try {
     await buildBar();
 
-    updateBar();
+    await updateBar();
 
     updateInterval = setInterval(() => {
-      updateBar();
+      await updateBar();
     }, 1000);
   }
   catch (error) {

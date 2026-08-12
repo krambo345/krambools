@@ -57,8 +57,8 @@ function buildIcon(pkg) {
 export async function app() {
   await injectCSS();
 
-  if (display) {
-    display.replaceChildren();
+  if (desktop) {
+    desktop.replaceChildren();
   }
   try {
     const installed = await kernel.bino.dir.list(structurePackages);
@@ -76,8 +76,8 @@ export async function app() {
       fragment.appendChild(buildIcon(packageData));
     });
 
-    if (display) {
-      display.appendChild(fragment);
+    if (desktop) {
+      desktop.appendChild(fragment);
     }
   }
   catch (error){
@@ -88,8 +88,8 @@ export async function app() {
 }
 
 export async function kill() {
-  if (display) {
-    display.replaceChildren();
+  if (desktop) {
+    desktop.replaceChildren();
   }
   const styleTag = document.querySelector('style[data-krambools]');
   if (styleTag) {
