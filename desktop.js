@@ -4,6 +4,7 @@ const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
 const desktop = document.createElement("div");
 display.appendChild(desktop)
+desktop.className = "desktop"
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
