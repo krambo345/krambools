@@ -27,31 +27,36 @@ async function buildBar() {
 }
 async function addMinimized() {
   const barLeft = document.querySelector(".bartender-barLeft");
-  const windows = document.querySelectorAll(".wer-win")
+  const windows = document.querySelectorAll(".wer-win");
+
+  barLeft.replaceChildren();
+
+  let minimized = 0;
+
   windows.forEach(win => {
-    
-    barLeft.replaceChildren();
-    let minimized = 0;
     if (window.getComputedStyle(win).display == "none") {
-      if (minimized <= 5) {
+      if (minimized < 5) {
         const icon = document.createElement("div");
         const img = document.createElement("img");
         const label = document.createElement("span");
+
         icon.className = "bartender-minimized";
         icon.appendChild(img);
         icon.appendChild(label);
         barLeft.appendChild(icon);
+
         img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`;
         label.innerHTML = win.dataset.windowname;
+
         icon.addEventListener("click", () => {
           win.style.display = "block";
-          icon.remove()
+          icon.remove();
         });
-        minimized ++;
-      }
-      else {
+
+        minimized++;
+      } else if (minimized === 5) {
         barLeft.insertAdjacentHTML("beforeend", "...");
-        return true;
+        minimized++;
       }
     }
   });

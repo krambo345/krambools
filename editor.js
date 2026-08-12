@@ -81,7 +81,13 @@ async function buildWindowMenu(win) {
 
   return menuBar;
 }
-
+async function editor(win){
+    const field = document.createElement("textarea");
+    field.style.height = "455px";
+    field.style.width = "250px";
+    field.className = "editor-field"
+    win.appendChild(field)
+}
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -106,6 +112,7 @@ export async function app() {
 
   if (win) {
     await buildWindowMenu(win);
+    await editor(win);
   }
 
   return true;
