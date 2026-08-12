@@ -96,7 +96,7 @@ export async function kill() {
   if (styleTag) {
     styleTag.remove();
   }
-
+  desktop.remove()
   return true;
 }
 
