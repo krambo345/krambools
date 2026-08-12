@@ -3,7 +3,7 @@ const bartender = await window.modOS.bartender;
 let zlast = 1;
 let observer = null;
 
-function insertFunctions(win) {
+async function insertFunctions(win) {
   const header = win.querySelector(".wer-winheader");
 
   header.insertAdjacentHTML(
@@ -94,7 +94,7 @@ function initwindow(win) {
   if (win.dataset.werWired === "true") return;
 
   win.dataset.werWired = "true";
-  insertFunctions(win);
+  await insertFunctions(win);
   dragElement(win);
 }
 
