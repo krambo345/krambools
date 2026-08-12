@@ -62,7 +62,10 @@ export async function app() {
     const installed = await kernel.bino.dir.list(structurePackages);
     const installedIds = Array.isArray(installed) ? installed : [];
 
-    const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
+    const pckgs = installedIds.length
+      ? JSON.parse(await kernel.bino.file.read(libJSONloc))
+      : [];
+
     const fragment = document.createDocumentFragment();
 
     installedIds.forEach((id) => {
@@ -78,7 +81,6 @@ export async function app() {
   catch (error){
     return kernel.system.log(error, "error")
   }
-  
 
   return true;
 }
