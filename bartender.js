@@ -27,7 +27,10 @@ async function buildBar() {
 }
 
 async function updateBar() {
-  const date = new Date();
+  const date = new Date;
+  const month = date.toLocaleString("en-US", {
+  month: "short"
+  });
   const barLeft = document.querySelector(".bartender-barLeft");
   const barMiddle = document.querySelector(".bartender-barMiddle");
   const windows = document.querySelectorAll(".wer-win")
@@ -44,9 +47,11 @@ async function updateBar() {
       img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`
       icon.addEventListener("click", () => {
         win.style.display = "block";
+        icon.remove()
       });
     }
   });
+  barMiddle.innerHTML = `${month} ${date.getDate} ${date.getHours}:${date.getMinutes}`
 }
 
 async function injectCSS() {
