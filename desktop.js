@@ -21,15 +21,21 @@ async function injectCSS() {
 }
 
 function buildIcon(pkg) {
-  const icon = document.createElement("div");
-  icon.className = "desktop-icon";
-  const img = document.createElement("img");
-  img.src = `${kernel.base}icons/${pkg.icon}.png`;
-  const label = document.createElement("span");
-  label.textContent = pkg.name;
+  try {
+    const icon = document.createElement("div");
+    icon.className = "desktop-icon";
+    const img = document.createElement("img");
+    img.src = `${kernel.base}icons/${pkg.icon}.png`;
+    const label = document.createElement("span");
+    label.textContent = pkg.name;
 
-  icon.appendChild(img);
-  icon.appendChild(label);
+    icon.appendChild(img);
+    icon.appendChild(label);
+  }
+  catch (error) {
+    return kernel.system.log(error, "error")
+  }
+
 
   icon.addEventListener("dblclick", async () => {
     try {
@@ -52,22 +58,27 @@ export async function app() {
   if (display) {
     display.replaceChildren();
   }
+  try {
+    const installed = await kernel.bino.dir.list(structurePackages);
+    const installedIds = Array.isArray(installed) ? installed : [];
 
-  const installed = await kernel.bino.dir.list(structurePackages);
-  const installedIds = Array.isArray(installed) ? installed : [];
+    const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
+    const fragment = document.createDocumentFragment();
 
-  const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
-  const fragment = document.createDocumentFragment();
+    installedIds.forEach((id) => {
+      const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
+      if (!packageData) return;
+      fragment.appendChild(buildIcon(packageData));
+    });
 
-  installedIds.forEach((id) => {
-    const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
-    if (!packageData) return;
-    fragment.appendChild(buildIcon(packageData));
-  });
-
-  if (display) {
-    display.appendChild(fragment);
+    if (display) {
+      display.appendChild(fragment);
+    }
   }
+  catch (error){
+    return kernel.system.log(error, "error")
+  }
+  
 
   return true;
 }
