@@ -51,7 +51,7 @@ async function updateBar() {
       });
     }
   });
-  barMiddle.innerHTML = `${month} ${date.getDate} ${date.getHours}:${date.getMinutes}`
+  barMiddle.innerHTML = `${month} ${date.getDate()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
 async function injectCSS() {
