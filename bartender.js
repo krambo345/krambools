@@ -95,9 +95,6 @@ export async function kill() {
   if (bar) {
     bar.remove();
   }
-  else {
-    kernel.system.log("Failed to kill bartender", "error");
-  }
 }
 
 export function commands() {
