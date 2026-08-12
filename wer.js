@@ -1,5 +1,4 @@
 const kernel = window.modOS.kernel;
-const bartender = window.modOS.bartender;
 let zlast = 1;
 let observer = null;
 
@@ -36,7 +35,7 @@ function windowz(e) {
 function minimwin(e) {
   e.style.display = "none";
 
-  bartender.update();
+  window.modOS.bartender?.update();
 }
 
 function closewin(e) {

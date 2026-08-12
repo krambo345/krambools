@@ -1,5 +1,4 @@
 const kernel = window.modOS.kernel;
-const bartender = window.modOS.bartender;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
@@ -48,7 +47,7 @@ function buildIcon(pkg) {
       if (!started) {
         await kernel.system.log(`Failed to start ${pkg.id}`, "error");
       }
-      bartender.update();
+      window.modOS.bartender?.update();
     } catch (error) {
       if (kernel) kernel.system.log(error, "error");
     }
