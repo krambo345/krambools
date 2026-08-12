@@ -21,12 +21,12 @@ async function injectCSS() {
 }
 
 function buildIcon(pkg) {
+  const icon = document.createElement("div");
+  const img = document.createElement("img");
+  const label = document.createElement("span");
   try {
-    const icon = document.createElement("div");
     icon.className = "desktop-icon";
-    const img = document.createElement("img");
     img.src = `${kernel.base}icons/${pkg.icon}.png`;
-    const label = document.createElement("span");
     label.textContent = pkg.name;
 
     icon.appendChild(img);
@@ -59,7 +59,7 @@ export async function app() {
     display.replaceChildren();
   }
   try {
-    const installed = await kernel.bino.dir.list(structurePackages);
+    const installed = await JSON.parse(kernel.bino.dir.list(structurePackages));
     const installedIds = Array.isArray(installed) ? installed : [];
 
     const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
