@@ -80,7 +80,6 @@
   background: none;
   border: none;
   background-color: #d10000;
-  margin-left: 3px;
 }
 
 .wer-closewin:hover {
@@ -99,6 +98,7 @@
   align-items: center;
   margin-left: auto;
   padding: 3px;
+  gap: 3px;
 }
 
 .desktop {
