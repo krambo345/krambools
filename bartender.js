@@ -41,7 +41,7 @@ async function updateBar() {
       icon.appendChild(img);
       icon.appendChild(label);
       barLeft.appendChild(icon);
-
+      img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`
       icon.addEventListener("click", () => {
         win.style.display = "block";
       });

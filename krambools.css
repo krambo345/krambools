@@ -50,10 +50,6 @@
   background-color: #d1d100;
 }
 
-.wer-minimwin:hover {
-  cursor: pointer;
-}
-
 .wer-closewin {
   border-radius: 10%;
   height: 15px;
