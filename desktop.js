@@ -2,7 +2,8 @@ const kernel = window.modOS.kernel;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
-
+const desktop = document.createElement("div");
+display.appendChild(desktop)
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -25,6 +26,7 @@ function buildIcon(pkg) {
   const img = document.createElement("img");
   const label = document.createElement("span");
   try {
+    desktop.appendChild(icon)
     icon.className = "desktop-icon";
     img.src = `${kernel.base}icons/${pkg.icon}.png`;
     label.textContent = pkg.name;
