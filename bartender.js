@@ -67,7 +67,6 @@ async function updateBar() {
     month: "short"
   });
   const barMiddle = document.querySelector(".bartender-barMiddle");
-  await addMinimized();
   barMiddle.innerHTML = `${month} ${date.getDate()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
@@ -96,7 +95,7 @@ export async function app() {
     await buildBar();
 
     await updateBar();
-
+    await addMinimized();
     updateInterval = setInterval(async () => {
       await updateBar();
     }, 1000);
