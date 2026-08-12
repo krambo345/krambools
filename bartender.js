@@ -2,7 +2,50 @@ const kernel = window.modOS.kernel;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
+async function buildBar() {
+  const bar = document.createElement("div");
+  const barLeft = document.createElement("div");
+  const barMiddle = document.createElement("div");
+  const barRight = document.createElement("div");
 
+  try {
+    display.appendChild(bar);
+    bar.appendChild(barLeft);
+    bar.appendChild(barMiddle);
+    bar.appendChild(barRight);
+    icon.appendChild(img);
+    icon.appendChild(label);
+    barLeft.appendChild(icon);
+    bar.className = "bartender-bar";
+    barLeft.className = "bartender-barLeft";
+    barMiddle.className = "bartender-barMiddle";
+    barRight.className = "bartender-barRight";
+    img.src = `${kernel.base}icons/${pkg.icon}.png`;
+  }
+  catch (error) {
+    kernel.system.log("error")
+  }
+}
+async function updateBar() {
+  const date = new Date();
+  const barLeft = document.querySelector(".bartender-barLeft");
+  const barMiddle = document.querySelector(".bartender-barMiddle");
+  const windows = document.querySelectorAll(".wer-win")
+  windows.forEach(win => {
+    if (window.getComputedStyle(win).display == "none") {
+      const icon = document.createElement("div");
+      const img = document.createElement("img");
+      const label = document.createElement("span");
+      icon.appendChild(img);
+      icon.appendChild(label);
+      barLeft.appendChild(icon);
+      icon.addEventListener("click",
+        win.style.display == "block"
+    )
+    }
+
+  });
+}
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -21,15 +64,19 @@ async function injectCSS() {
 }
 
 function buildIcon(pkg) {
-  const icon = document.createElement("div");
-  icon.className = "desktop-icon";
-  const img = document.createElement("img");
-  img.src = `${kernel.base}icons/${pkg.icon}.png`;
-  const label = document.createElement("span");
-  label.textContent = pkg.name;
 
-  icon.appendChild(img);
-  icon.appendChild(label);
+  try {
+    icon.className = "desktop-icon";
+
+    label.textContent = pkg.name;
+
+    icon.appendChild(img);
+    icon.appendChild(label);
+  }
+  catch (error) {
+    return kernel.system.log(error, "error")
+  }
+
 
   icon.addEventListener("dblclick", async () => {
     try {
@@ -52,21 +99,28 @@ export async function app() {
   if (display) {
     display.replaceChildren();
   }
+  try {
+    const installed = await kernel.bino.dir.list(structurePackages);
+    const installedIds = Array.isArray(installed) ? installed : [];
 
-  const installed = await kernel.bino.dir.list(structurePackages);
-  const installedIds = Array.isArray(installed) ? installed : [];
+    const pckgs = installedIds.length
+      ? JSON.parse(await kernel.bino.file.read(libJSONloc))
+      : [];
 
-  const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
-  const fragment = document.createDocumentFragment();
+    const fragment = document.createDocumentFragment();
 
-  installedIds.forEach((id) => {
-    const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
-    if (!packageData) return;
-    fragment.appendChild(buildIcon(packageData));
-  });
+    installedIds.forEach((id) => {
+      const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
+      if (!packageData) return;
+      fragment.appendChild(buildIcon(packageData));
+    });
 
-  if (display) {
-    display.appendChild(fragment);
+    if (display) {
+      display.appendChild(fragment);
+    }
+  }
+  catch (error) {
+    return kernel.system.log(error, "error")
   }
 
   return true;
