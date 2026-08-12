@@ -13,14 +13,10 @@ async function buildBar() {
     bar.appendChild(barLeft);
     bar.appendChild(barMiddle);
     bar.appendChild(barRight);
-    icon.appendChild(img);
-    icon.appendChild(label);
-    barLeft.appendChild(icon);
     bar.className = "bartender-bar";
     barLeft.className = "bartender-barLeft";
     barMiddle.className = "bartender-barMiddle";
     barRight.className = "bartender-barRight";
-    img.src = `${kernel.base}icons/${pkg.icon}.png`;
   }
   catch (error) {
     kernel.system.log("error")
