@@ -90,9 +90,13 @@ export async function kill() {
     updateInterval = null;
   }
 
-  const bar = document.querySelector(".bartender-bar").remove()
-  if (!bar){
-    kernel.system.log("Failed to kill bartender", "error")
+  const bar = document.querySelector(".bartender-bar");
+
+  if (bar) {
+    bar.remove();
+  }
+  else {
+    kernel.system.log("Failed to kill bartender", "error");
   }
 }
 
