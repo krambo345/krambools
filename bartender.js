@@ -26,9 +26,10 @@ async function buildBar() {
   }
 }
 async function addMinimized() {
+  const barLeft = document.querySelector(".bartender-barLeft");
+  const windows = document.querySelectorAll(".wer-win")
   windows.forEach(win => {
-    const barLeft = document.querySelector(".bartender-barLeft");
-    const windows = document.querySelectorAll(".wer-win")
+    
     barLeft.replaceChildren();
     let minimized = 0;
     if (window.getComputedStyle(win).display == "none") {

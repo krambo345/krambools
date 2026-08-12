@@ -49,6 +49,9 @@
   border: none;
   background-color: #d1d100;
 }
+.wer-minimwin:hover {
+  cursor: var(--cursor-pointer);
+}
 
 .wer-closewin {
   border-radius: 10%;
@@ -99,7 +102,10 @@
   align-items: center;
   color: #fff;
 }
-
+.desktop-icon:hover {
+    background-color: #00000083;
+    cursor: var(--cursor-pointer);
+}
 .desktop-icon span {
   margin-top: 10px;
   text-align: center;
@@ -157,4 +163,54 @@
 
 .bartender-minimized:hover {
   border: 3px solid #55d3ff;
+  cursor: var(--cursor-pointer);
+}
+.editor-menu {
+  display: flex;
+  height: 30px;
+  background: #eee;
+  color: #000;
+}
+
+.editor-menu-item {
+  position: relative;
+}
+
+.editor-menu-button {
+  height: 100%;
+  border: none;
+  background: none;
+  padding: 0 12px;
+}
+
+.editor-menu-button:hover {
+  background: #ddd;
+}
+
+.editor-menu-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 120px;
+  background: #fff;
+  border: 1px solid #aaa;
+  z-index: 1001;
+}
+
+.editor-menu-content.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-menu-option {
+  border: none;
+  background: none;
+  text-align: left;
+  padding: 8px 12px;
+  color: #000;
+}
+
+.editor-menu-option:hover {
+  background: #ddd;
 }
