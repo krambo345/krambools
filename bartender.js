@@ -1,5 +1,3 @@
-import { minimwin } from "./wer";
-
 const kernel = window.modOS.kernel;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
