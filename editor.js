@@ -75,7 +75,7 @@ async function buildWindowMenu(win) {
   });
 
   fileOptionClose.addEventListener("click", () => {
-    kill()
+    kill(win);
     fileContent.classList.remove("open");
   });
 
@@ -119,7 +119,7 @@ export async function app() {
   return true;
 }
 
-export async function kill() {
+export async function kill(win) {
   return true;
 }
 
