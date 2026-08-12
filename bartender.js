@@ -37,12 +37,14 @@ async function updateBar() {
       const icon = document.createElement("div");
       const img = document.createElement("img");
       const label = document.createElement("span");
+
       icon.appendChild(img);
       icon.appendChild(label);
       barLeft.appendChild(icon);
-      icon.addEventListener("click",
-        win.style.display == "block"
-      )
+
+      icon.addEventListener("click", () => {
+        win.style.display = "block";
+      });
     }
   });
 }
@@ -73,7 +75,7 @@ export async function app() {
 
     await updateBar();
 
-    updateInterval = setInterval(async() => {
+    updateInterval = setInterval(async () => {
       await updateBar();
     }, 1000);
   }
