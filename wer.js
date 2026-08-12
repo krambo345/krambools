@@ -26,6 +26,10 @@ function windowz(e) {
 
 function minimwin(e) {
   e.style.display = "none";
+
+  if (window.updateBartender) {
+    window.updateBartender();
+  }
 }
 
 function closewin(e) {
