@@ -40,12 +40,12 @@ async function updateBar() {
       const icon = document.createElement("div");
       const img = document.createElement("img");
       const label = document.createElement("span");
-
+      icon.className = "bartender-minimized";
       icon.appendChild(img);
       icon.appendChild(label);
       barLeft.appendChild(icon);
-      img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`
-      label.innerHTML = win.dataset.windowname
+      img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`;
+      label.innerHTML = win.dataset.windowname;
       icon.addEventListener("click", () => {
         win.style.display = "block";
         icon.remove()
@@ -107,7 +107,7 @@ export async function kill() {
 
 export function commands() {
   return {
-    desktop: {
+    bartender: {
       args: "<arg>",
       description: "Refresh Bartender",
       run: async () => await app(),
