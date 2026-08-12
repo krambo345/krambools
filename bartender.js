@@ -45,6 +45,7 @@ async function updateBar() {
       icon.appendChild(label);
       barLeft.appendChild(icon);
       img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`
+      label.innerHTML = win.dataset.windowname
       icon.addEventListener("click", () => {
         win.style.display = "block";
         icon.remove()
