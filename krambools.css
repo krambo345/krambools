@@ -132,5 +132,9 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    border: #55d3ff;
+    border: none;
+    padding: 3px;
+}
+.bartender-minimized:hover{
+    border: 3px solid #55d3ff;
 }
