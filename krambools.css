@@ -22,6 +22,15 @@
   transition: backdrop-filter, background-color 0.4s;
   color: #000;
 }
+.wer-win:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  border: none;
+  left: 0;
+  top: 0;
+  transform: none;
+}
 
 .wer-win:hover {
   backdrop-filter: blur(0);
@@ -39,6 +48,17 @@
 .wer-windowicon {
   padding: 3px;
   height: 20px;
+}
+.wer-fullwin {
+  border-radius: 10%;
+  height: 15px;
+  width: 15px;
+  background: none;
+  border: none;
+  background-color: #41b000;
+}
+.wer-fullwin:hover {
+  cursor: var(--cursor-pointer);
 }
 
 .wer-minimwin {

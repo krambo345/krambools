@@ -8,11 +8,19 @@ function insertFunctions(win) {
 
   header.insertAdjacentHTML(
     "beforeend",
-    `<div class="wer-winl"><img src="${kernel.base}icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
+    `<div class="wer-winl"><img src="${kernel.base}icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-fullwin"></button><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", () => {
     minimwin(header.closest(".wer-win"));
+  });
+
+  header.querySelector(".wer-fullwin").addEventListener("click", async () => {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    } else {
+      await win.requestFullscreen();
+    }
   });
 
   header.querySelector(".wer-closewin").addEventListener("click", () => {
