@@ -1,3 +1,5 @@
+import { minimwin } from "./wer";
+
 const kernel = window.modOS.kernel;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
@@ -129,7 +131,7 @@ export function commands() {
         update: {
           args: "",
           description: "Update Bartender",
-          run: async () => await updateBar(),
+          run: async () => await updateBar() && await addMinimized(),
         },
         refresh: {
           args: "",

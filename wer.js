@@ -11,6 +11,7 @@ function insertFunctions(win) {
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", () => {
+    barte
     minimwin(header.closest(".wer-win"));
   });
 
@@ -135,15 +136,6 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-
-export {
-  insertFunctions,
-  dragElement,
-  minimwin,
-  closewin,
-  initwindow,
-  createWindow,
-};
 
 window.insertFunctions = insertFunctions;
 window.dragElement = dragElement;
