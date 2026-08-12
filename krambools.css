@@ -1,122 +1,138 @@
-.display{
-    background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
-    background-size: cover;
-    background-repeat: no-repeat;
+.display {
+  background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
 }
-button:hover{
-    cursor: pointer;
-}
-.wer-win{
-    position: absolute;
-    border: solid #0077ff 5px;
-    background-color: #ffffff9a;
 
-    display: inline-block;
-    width: 800px;
-    min-width: 250px;
-    max-width: 90vw;
+button:hover {
+  cursor: pointer;
+}
 
-    height: auto;
+.wer-win {
+  position: absolute;
+  border: solid #0077ff 5px;
+  background-color: #ffffff9a;
+  display: inline-block;
+  width: 800px;
+  min-width: 250px;
+  max-width: 90vw;
+  height: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(3px);
+  transition: backdrop-filter, background-color 0.4s;
+  color: #000;
+}
 
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+.wer-win:hover {
+  backdrop-filter: blur(0);
+  background-color: #ffffff;
+}
 
-    backdrop-filter: blur(3px);
-    transition: backdrop-filter, background-color 0.4s;
-    color: #000;
+.wer-winheader {
+  align-items: center;
+  height: 30px;
+  background-color: #0077ff;
+  color: #fff;
+  display: flex;
 }
-.wer-win:hover{
-    backdrop-filter: blur(0);
-    background-color: #ffffff;
+
+.wer-windowicon {
+  padding: 3px;
+  height: 20px;
 }
-.wer-winheader{
-    align-items: center;
-    height: 30px;
-    background-color: #0077ff;
-    color: #fff;
-    display: flex;
+
+.wer-minimwin {
+  border-radius: 10%;
+  height: 15px;
+  width: 15px;
+  background: none;
+  border: none;
+  background-color: #d1d100;
 }
-.wer-windowicon{
-    padding: 3px;
-    height: 20px;
+
+.wer-minimwin:hover {
+  cursor: pointer;
 }
-.wer-minimwin{
-    border-radius: 10%;
-    height:15px;
-    width: 15px;
-    background: none;
-    border: none;
-    background-color: #d1d100;
+
+.wer-closewin {
+  border-radius: 10%;
+  height: 15px;
+  width: 30px;
+  background: none;
+  border: none;
+  background-color: #d10000;
+  margin-left: 3px;
 }
-.wer-minimwin:hover{
-    background-color: #8a8a00;
+
+.wer-closewin:hover {
+  cursor: pointer;
 }
-.wer-closewin{
-    border-radius: 10%;
-    height:15px;
-    width: 30px;
-    background: none;
-    border: none;
-    background-color: #d10000;
-    margin-left: 3px;
+
+.wer-winl {
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
-.wer-closewin:hover{
-    background-color: #8a0000;
+
+.wer-winr {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-left: auto;
+  padding: 3px;
 }
-.wer-winl{
-    display: flex;
-    justify-content: start;
-    align-items: center;
+
+.desktop {
+  position: relative;
+  height: calc(100% - 65px);
+  width: 100%;
+  padding: 65px 8px 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 90px);
+  column-gap: 60px;
+  box-sizing: border-box;
 }
-.wer-winr{
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    margin-left: auto;
-    padding: 3px;
+
+.desktop-icon {
+  display: flex;
+  padding: 30px;
+  height: fit-content;
+  width: 70px;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
 }
-.desktop{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    padding: 8px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill 90px);
-    column-gap: 60px;
+
+.desktop-icon:hover img {
+  height: 50px;
 }
-.desktop-icon{
-    display: flex;
-    padding: 30px;
-    height: fit-content;
-    width: 70px;
-    flex-direction: column;
-    align-items: center;
-    color: #fff;
+
+.desktop-icon span {
+  margin-top: 10px;
+  text-align: center;
+  word-break: normal;
 }
-.desktop-icon:hover{
-    background-color: #00000071;
+
+.xterm-screen {
+  padding: 5px;
 }
-.desktop-icon img{
-    height: 50px;
-}
-.desktop-icon span{
-    margin-top: 10px;
-    text-align: center;
-    word-break: normal;
-}
-.xterm-screen{
-    padding: 5px;
-}
-.bartender-bar{
-    display: flex;
-    justify-content: space-around;
-    background-color: #1a1a1adc;
-    backdrop-filter: blur(3px);
-    padding: 15px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 5%;
+
+.bartender-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: #1a1a1adc;
+  backdrop-filter: blur(3px);
+  padding: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  z-index: 1000;
 }
