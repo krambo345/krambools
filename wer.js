@@ -1,5 +1,5 @@
 const kernel = window.modOS.kernel;
-const bartender = window.modOS.bartender;
+const bartender = await window.modOS.bartender;
 let zlast = 1;
 let observer = null;
 
@@ -12,7 +12,7 @@ function insertFunctions(win) {
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", () => {
-    bartender.update();
+    await bartender?.update();
     minimwin(header.closest(".wer-win"));
   });
 
