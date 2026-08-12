@@ -2,6 +2,9 @@ const kernel = window.modOS.kernel;
 const structurePackages = window.modOS.variables.structurePackages;
 const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
+
+let updateInterval = null;
+
 async function buildBar() {
   const bar = document.createElement("div");
   const barLeft = document.createElement("div");
@@ -22,11 +25,13 @@ async function buildBar() {
     kernel.system.log("error")
   }
 }
+
 async function updateBar() {
   const date = new Date();
   const barLeft = document.querySelector(".bartender-barLeft");
   const barMiddle = document.querySelector(".bartender-barMiddle");
   const windows = document.querySelectorAll(".wer-win")
+  barLeft.replaceChildren()
   windows.forEach(win => {
     if (window.getComputedStyle(win).display == "none") {
       const icon = document.createElement("div");
@@ -37,11 +42,11 @@ async function updateBar() {
       barLeft.appendChild(icon);
       icon.addEventListener("click",
         win.style.display == "block"
-    )
+      )
     }
-
   });
 }
+
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -59,61 +64,18 @@ async function injectCSS() {
   }
 }
 
-function buildIcon(pkg) {
-
-  try {
-    icon.className = "desktop-icon";
-
-    label.textContent = pkg.name;
-
-    icon.appendChild(img);
-    icon.appendChild(label);
-  }
-  catch (error) {
-    return kernel.system.log(error, "error")
-  }
-
-
-  icon.addEventListener("dblclick", async () => {
-    try {
-      if (!kernel) return;
-      const started = await kernel.packer.start(pkg.id);
-      if (!started) {
-        await kernel.system.log(`Failed to start ${pkg.id}`, "error");
-      }
-    } catch (error) {
-      if (kernel) kernel.system.log(error, "error");
-    }
-  });
-
-  return icon;
-}
-
 export async function app() {
+  await kill();
   await injectCSS();
 
-  if (display) {
-    display.replaceChildren();
-  }
   try {
-    const installed = await kernel.bino.dir.list(structurePackages);
-    const installedIds = Array.isArray(installed) ? installed : [];
+    await buildBar();
 
-    const pckgs = installedIds.length
-      ? JSON.parse(await kernel.bino.file.read(libJSONloc))
-      : [];
+    updateBar();
 
-    const fragment = document.createDocumentFragment();
-
-    installedIds.forEach((id) => {
-      const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
-      if (!packageData) return;
-      fragment.appendChild(buildIcon(packageData));
-    });
-
-    if (display) {
-      display.appendChild(fragment);
-    }
+    updateInterval = setInterval(() => {
+      updateBar();
+    }, 1000);
   }
   catch (error) {
     return kernel.system.log(error, "error")
@@ -123,22 +85,22 @@ export async function app() {
 }
 
 export async function kill() {
-  if (display) {
-    display.replaceChildren();
-  }
-  const styleTag = document.querySelector('style[data-krambools]');
-  if (styleTag) {
-    styleTag.remove();
+  if (updateInterval) {
+    clearInterval(updateInterval);
+    updateInterval = null;
   }
 
-  return true;
+  const bar = document.querySelector(".bartender-bar").remove()
+  if (!bar){
+    kernel.system.log("Failed to kill bartender", "error")
+  }
 }
 
 export function commands() {
   return {
     desktop: {
       args: "<arg>",
-      description: "Refresh Desktop",
+      description: "Refresh Bartender",
       run: async () => await app(),
     },
   };
