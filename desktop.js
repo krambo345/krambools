@@ -59,7 +59,7 @@ export async function app() {
     display.replaceChildren();
   }
   try {
-    const installed = await JSON.parse(kernel.bino.dir.list(structurePackages));
+    const installed = await JSON.parse(`${kernel.bino.dir.list(structurePackages)}`);
     const installedIds = Array.isArray(installed) ? installed : [];
 
     const pckgs = installedIds.length ? await kernel.bino.file.read(libJSONloc) : [];
