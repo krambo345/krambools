@@ -47,6 +47,7 @@ async function addMinimized() {
           win.style.display = "block";
           icon.remove()
         });
+        minimized ++;
       }
       else {
         barLeft.insertAdjacentHTML("beforeend", "...");
