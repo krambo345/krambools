@@ -109,8 +109,19 @@ export function commands() {
   return {
     bartender: {
       args: "<arg>",
-      description: "Refresh Bartender",
-      run: async () => await app(),
+      description: "Bartender commands",
+      sub: {
+        update: {
+          args: "",
+          description: "Update Bartender",
+          run: async () => await updateBar(),
+        },
+        refresh: {
+          args: "",
+          description: "Refresh Bartender",
+          run: async () => await app(),
+        },
+      },
     },
   };
 }
