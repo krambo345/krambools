@@ -29,6 +29,7 @@ async function addMinimized() {
   windows.forEach(win => {
     const barLeft = document.querySelector(".bartender-barLeft");
     const windows = document.querySelectorAll(".wer-win")
+    barLeft.replaceChildren();
     let minimized = 0;
     if (window.getComputedStyle(win).display == "none") {
       if (minimized <= 5) {
@@ -59,7 +60,6 @@ async function updateBar() {
     month: "short"
   });
   const barMiddle = document.querySelector(".bartender-barMiddle");
-  barLeft.replaceChildren();
   await addMinimized();
   barMiddle.innerHTML = `${month} ${date.getDate()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
