@@ -25,33 +25,42 @@ async function buildBar() {
     kernel.system.log("error")
   }
 }
-
+async function addMinimized() {
+  windows.forEach(win => {
+    const barLeft = document.querySelector(".bartender-barLeft");
+    const windows = document.querySelectorAll(".wer-win")
+    let minimized = 0;
+    if (window.getComputedStyle(win).display == "none") {
+      if (minimized <= 5) {
+        const icon = document.createElement("div");
+        const img = document.createElement("img");
+        const label = document.createElement("span");
+        icon.className = "bartender-minimized";
+        icon.appendChild(img);
+        icon.appendChild(label);
+        barLeft.appendChild(icon);
+        img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`;
+        label.innerHTML = win.dataset.windowname;
+        icon.addEventListener("click", () => {
+          win.style.display = "block";
+          icon.remove()
+        });
+      }
+      else {
+        barLeft.insertAdjacentHTML("beforeend", "...");
+        return true;
+      }
+    }
+  });
+}
 async function updateBar() {
   const date = new Date;
   const month = date.toLocaleString("en-US", {
-  month: "short"
+    month: "short"
   });
-  const barLeft = document.querySelector(".bartender-barLeft");
   const barMiddle = document.querySelector(".bartender-barMiddle");
-  const windows = document.querySelectorAll(".wer-win")
-  barLeft.replaceChildren()
-  windows.forEach(win => {
-    if (window.getComputedStyle(win).display == "none") {
-      const icon = document.createElement("div");
-      const img = document.createElement("img");
-      const label = document.createElement("span");
-      icon.className = "bartender-minimized";
-      icon.appendChild(img);
-      icon.appendChild(label);
-      barLeft.appendChild(icon);
-      img.src = `${kernel.base}icons/${win.dataset.windowicon}.png`;
-      label.innerHTML = win.dataset.windowname;
-      icon.addEventListener("click", () => {
-        win.style.display = "block";
-        icon.remove()
-      });
-    }
-  });
+  barLeft.replaceChildren();
+  await addMinimized();
   barMiddle.innerHTML = `${month} ${date.getDate()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 
