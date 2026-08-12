@@ -1,4 +1,5 @@
 const kernel = window.modOS.kernel;
+const bartender = window.modOS.bartender;
 let zlast = 1;
 let observer = null;
 
@@ -11,7 +12,7 @@ function insertFunctions(win) {
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", () => {
-    barte
+    bartender.update();
     minimwin(header.closest(".wer-win"));
   });
 
@@ -136,14 +137,6 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-
-window.insertFunctions = insertFunctions;
-window.dragElement = dragElement;
-window.minimwin = minimwin;
-window.closewin = closewin;
-window.initwindow = initwindow;
-window.createWindow = createWindow;
-
 export async function app(pckg) {
   if (observer) {
     observer.disconnect();
