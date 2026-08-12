@@ -73,7 +73,7 @@ export async function app() {
 
     await updateBar();
 
-    updateInterval = setInterval(() => {
+    updateInterval = setInterval(async() => {
       await updateBar();
     }, 1000);
   }
