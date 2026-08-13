@@ -1,5 +1,4 @@
 const kernel = window.modOS.kernel;
-const bartender = await window.modOS.bartender;
 let zlast = 1;
 let observer = null;
 
@@ -11,8 +10,8 @@ async function insertFunctions(win) {
     `<div class="wer-winl"><img src="${kernel.base}icons/${win.dataset.windowicon}.png" class="wer-windowicon"></img><span>${win.dataset.windowname}</span></div><div class="wer-winr"><button class="wer-fullwin"></button><button class="wer-minimwin"></button><button class="wer-closewin"></button></div>`,
   );
 
-  header.querySelector(".wer-minimwin").addEventListener("click", () => {
-    await bartender?.update();
+  header.querySelector(".wer-minimwin").addEventListener("click", async () => {
+    await window.modOS.bartender?.update();
     minimwin(header.closest(".wer-win"));
   });
 
