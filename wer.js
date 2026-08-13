@@ -89,7 +89,7 @@ function dragElement(element) {
   }
 }
 
-function initwindow(win) {
+async function initwindow(win) {
   if (win.dataset.werWired === "true") return;
 
   win.dataset.werWired = "true";
