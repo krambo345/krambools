@@ -55,7 +55,7 @@ function dragElement(element) {
   let initialY = 0;
 
   function startDragging(e) {
-    if (!document.fullscreenElement) return;
+    if (document.fullscreenElement == null) return;
     windowz(element);
     e = e || window.event;
     e.preventDefault();

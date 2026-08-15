@@ -135,7 +135,7 @@
 .xterm-screen {
   padding: 5px;
 }
-.xterm-screen:fullscreen{
+.wer-win:fullscreen .xterm-screen{
   height: 100%;
   width: 100%;
 }
@@ -238,7 +238,7 @@
 .editor-menu-option:hover {
   background: #ddd;
 }
-.editor-field:fullscreen{
-  height: 100%;
-  width: calc(100% - 60px);
+.wer-win:fullscreen .editor-field{
+  width: 100%;
+  height: calc(100% - 60px);
 }
