@@ -11,8 +11,8 @@ async function insertFunctions(win) {
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", async () => {
-    await window.modOS.bartender?.update();
     minimwin(header.closest(".wer-win"));
+    await window.modOS.bartender?.update();
   });
 
   header.querySelector(".wer-fullwin").addEventListener("click", async () => {

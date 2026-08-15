@@ -129,7 +129,11 @@ export function commands() {
         update: {
           args: "",
           description: "Update bartender",
-          run: async () => await updateBar() && await addMinimized(),
+          run: async () => {
+            await updateBar();
+            await addMinimized();
+            return "sent update bartender request"
+          },
         },
       },
     },
