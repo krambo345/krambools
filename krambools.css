@@ -245,7 +245,19 @@
   border: 3px solid #55d3ff;
   cursor: var(--cursor-pointer);
 }
-
+.bartender-save{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 3px solid #ffffff00;
+  padding: 3px;
+}
+.bartender-save:hover {
+  border: 3px solid #55d3ff;
+  cursor: var(--cursor-pointer);
+}
 .editor-menu {
   display: flex;
   height: 30px;

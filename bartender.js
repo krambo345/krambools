@@ -86,7 +86,24 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
+async function save() {
+  const barRight = document.querySelector(".bartender-barRight");
 
+        const icon = document.createElement("div");
+        const img = document.createElement("img");
+        const label = document.createElement("span");
+
+        icon.className = "bartender-save";
+        icon.appendChild(img);
+        icon.appendChild(label);
+        barRight.appendChild(icon);
+
+        img.src = `${kernel.base}icons/flop_drive.png`;
+        label.innerHTML = "Save";
+        icon.addEventListener("click",
+          kernel.account.update()
+        );
+}
 export async function app() {
   await kill();
   await injectCSS();

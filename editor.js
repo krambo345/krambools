@@ -105,9 +105,7 @@ async function injectCSS() {
 }
 
 export async function app() {
-  await injectCSS();
-
-  const win = await wer.win("com.krambo345.editor");
+  const win = await wer.win("com.krambo345.ranger");
 
   if (win) {
     await buildWindowMenu(win);
@@ -118,6 +116,7 @@ export async function app() {
 }
 
 export async function kill(win) {
+  win.remove();
   return true;
 }
 

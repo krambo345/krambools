@@ -1,154 +1,208 @@
 const kernel = window.modOS.kernel;
 const wer = window.modOS.wer;
 
-let rangerWindow = null;
-let currentPath = "/";
-let history = [];
+const path = "/"
+async function rightMenu() {
+  const menuSelected = document.createElement("div");
+  menuSelected.id = "contextMenu";
+  menuSelected.className = "context-menu";
+  menuSelected.style.display = "none";
 
-function joinPath(base, name) {
-  if (base === "/") return `/${name}`;
-  return `${base.replace(/\/$/, "")}/${name}`;
+  const selectedList = document.createElement("ul");
+
+  const editItem = document.createElement("li");
+  const editButton = document.createElement("button");
+  editButton.textContent = "Edit";
+
+  const renameItem = document.createElement("li");
+  const renameButton = document.createElement("button");
+  renameButton.textContent = "Rename";
+
+  editItem.appendChild(editButton);
+  renameItem.appendChild(renameButton);
+
+  selectedList.appendChild(editItem);
+  selectedList.appendChild(renameItem);
+
+  menuSelected.appendChild(selectedList);
+
+  const emptyList = document.createElement("ul");
+
+  const newFileButton = document.createElement("button");
+  newFileButton.textContent = "New File";
+
+  const newFileItem = document.createElement("li");
+  newFileItem.appendChild(newFileButton);
+
+  const newFolderButton = document.createElement("button");
+  newFolderButton.textContent = "New Folder";
+
+  const newFolderItem = document.createElement("li");
+  newFolderItem.appendChild(newFolderButton);
+
+  emptyList.appendChild(newFileItem);
+  emptyList.appendChild(newFolderItem);
+
+  menuEmpty.appendChild(emptyList);
+
+  return {
+    menuSelected,
+    menuEmpty
+  };
 }
-
-function parentPath(path) {
-  if (path === "/" || !path) return "/";
-  const parts = path.split("/").filter(Boolean);
-  parts.pop();
-  return parts.length ? `/${parts.join("/")}` : "/";
-}
-
 function getIcon(name, isDirectory) {
-  if (isDirectory) return "📁";
+  if (isDirectory) {
+    return `${kernel.base}icons/folder.png`;
+  }
 
   const ext = name.includes(".")
     ? name.split(".").pop().toLowerCase()
     : "";
 
   const icons = {
-    js: "📜",
-    ts: "📜",
-    html: "🌐",
-    css: "🎨",
-    json: "⚙️",
-    png: "🖼️",
-    jpg: "🖼️",
-    jpeg: "🖼️",
-    gif: "🖼️",
-    svg: "🖼️",
-    mp3: "🎵",
-    wav: "🎵",
-    mp4: "🎬",
-    txt: "📄",
-    md: "📝",
+    ase: "aseprite.png",
+
+    c: "file-c.png",
+    cpp: "file-cpp.png",
+    h: "file-h.png",
+    hpp: "file-hpp.png",
+
+    html: "file-html.png",
+    htm: "file-html.png",
+    xml: "file-xml.png",
+
+    css: "text-css.png",
+
+    js: "script-javascript.png",
+    mjs: "script-javascript.png",
+    cjs: "script-javascript.png",
+
+    ts: "script-typescript.png",
+
+    lua: "script-lua.png",
+    perl: "script-perl.png",
+    php: "script-php.png",
+    py: "script-python.png",
+    qml: "script-qml.png",
+    rb: "script-ruby.png",
+    tcl: "script-tcl.png",
+    ahk: "script-autohotkey.png",
+    awk: "script-awk.png",
+
+    cs: "text-csharp.png",
+    java: "text-java.png",
+    md: "text-markdown.png",
+
+    json: "text-gear.png",
+    reg: "file-reg.png",
+
+    txt: "text.png",
+    text: "text.png",
+
+    png: "image-png.png",
+    jpg: "image-jpeg.png",
+    jpeg: "image-jpeg.png",
+    gif: "image-gif.png",
+    ico: "image-ico.png",
+    tga: "image-tga.png",
+    tif: "image-tiff.png",
+    tiff: "image-tiff.png",
+    webp: "image-webp.png",
+
+    mp3: "music.png",
+    wav: "sounds.png",
+    ogg: "sounds.png",
+    flac: "sounds.png",
+
+    mp4: "movies.png",
+    webm: "movies.png",
+    mov: "movies.png",
+    avi: "movies.png",
+
+    otf: "file-font-opentype.png",
+    ttf: "file-font-truetype.png",
+    woff: "file-font.png",
+    woff2: "file-font.png",
+
+    exe: "program.png",
+    bin: "bin.png",
   };
 
-  return icons[ext] || "📄";
+  return `${kernel.base}icons/${icons[ext] || "undefined.png"}`;
 }
 
-async function renderDirectory(path) {
-  currentPath = path;
+async function buildWindowMenu(win) {
+  const menuBar = document.createElement("div");
+  const fileMenu = document.createElement("div");
+  const file = document.createElement("button");
+  const fileContent = document.createElement("div");
 
-  const content = rangerWindow?.querySelector(".wer-content");
-  if (!content) return;
+  const fileOptionNew = document.createElement("button");
+  const fileOptionOpen = document.createElement("button");
+  const fileOptionSave = document.createElement("button");
+  const fileOptionSaveAs = document.createElement("button");
+  const fileOptionClose = document.createElement("button");
 
-  const list = content.querySelector(".ranger-list");
-  const pathDisplay = content.querySelector(".ranger-path");
+  menuBar.className = "ranger-menu";
+  fileMenu.className = "ranger-menu-item";
+  file.className = "ranger-menu-button";
+  fileContent.className = "ranger-menu-content";
 
-  pathDisplay.textContent = path;
-  list.replaceChildren();
+  fileOptionNew.className = "ranger-menu-option";
+  fileOptionOpen.className = "ranger-menu-option";
+  fileOptionSave.className = "ranger-menu-option";
+  fileOptionSaveAs.className = "ranger-menu-option";
+  fileOptionClose.className = "ranger-menu-option";
 
-  let entries;
+  file.textContent = "File";
+  fileOptionNew.textContent = "New File";
+  fileOptionOpen.textContent = "New Folder";
+  fileOptionSave.textContent = "Save";
+  fileOptionSaveAs.textContent = "Save As";
+  fileOptionClose.textContent = "Close";
 
-  try {
-    entries = kernel.bino.dir.list(path);
-  } catch (error) {
-    kernel.system.log(`Failed to read ${path}: ${error}`, "error");
-    return;
-  }
+  fileContent.appendChild(fileOptionNew);
+  fileContent.appendChild(fileOptionOpen);
+  fileContent.appendChild(fileOptionSave);
+  fileContent.appendChild(fileOptionSaveAs);
+  fileContent.appendChild(fileOptionClose);
 
-  if (!Array.isArray(entries)) {
-    kernel.system.log(`Cannot read directory ${path}: ${entries}`, "error");
-    return;
-  }
+  fileMenu.appendChild(file);
+  fileMenu.appendChild(fileContent);
+  menuBar.appendChild(fileMenu);
 
-  for (const entry of entries) {
-    const name = String(entry);
-    const entryPath = joinPath(path, name);
-    const isDirectory = Array.isArray(kernel.bino.dir.list(entryPath));
+  win.querySelector(".wer-content").appendChild(menuBar);
 
-    const item = document.createElement("button");
-    item.className = "ranger-item";
+  file.addEventListener("click", () => {
+    fileContent.classList.toggle("open");
+  });
 
-    const icon = document.createElement("span");
-    icon.className = "ranger-icon";
-    icon.textContent = getIcon(name, isDirectory);
+  document.addEventListener("click", (event) => {
+    if (!fileMenu.contains(event.target)) {
+      fileContent.classList.remove("open");
+    }
+  });
 
-    const label = document.createElement("span");
-    label.className = "ranger-name";
-    label.textContent = name;
+  fileOptionNew.addEventListener("click", () => {
+    kernel.system.log("New file", "info");
+    fileContent.classList.remove("open");
+  });
 
-    item.append(icon, label);
+  fileOptionOpen.addEventListener("click", () => {
+    kernel.system.log("Open file", "info");
+    fileContent.classList.remove("open");
+  });
 
-    item.addEventListener("dblclick", async () => {
-      if (isDirectory) {
-        history.push(currentPath);
-        await renderDirectory(entryPath);
-        return;
-      }
+  fileOptionClose.addEventListener("click", () => {
+    kill(win);
+    fileContent.classList.remove("open");
+  });
 
-      const data = kernel.bino.file.read(entryPath);
-
-      if (data === undefined) {
-        kernel.system.log(`Could not read ${entryPath}`, "error");
-        return;
-      }
-
-      kernel.system.log(`${name}:\n${data}`, "info");
-    });
-
-    list.appendChild(item);
-  }
+  return menuBar;
 }
 
 export async function app() {
-  rangerWindow = await wer.win("com.krambo345.ranger");
-
-  rangerWindow.querySelector(".wer-content").innerHTML = `
-    <div class="ranger">
-      <div class="ranger-toolbar">
-        <button class="ranger-back">←</button>
-        <button class="ranger-up">↑</button>
-        <button class="ranger-root">⌂</button>
-        <span class="ranger-path">/</span>
-      </div>
-
-      <div class="ranger-list"></div>
-    </div>
-  `;
-
-  const content = rangerWindow.querySelector(".wer-content");
-
-  content.querySelector(".ranger-back").addEventListener("click", async () => {
-    if (!history.length) return;
-
-    const previous = history.pop();
-    await renderDirectory(previous);
-  });
-
-  content.querySelector(".ranger-up").addEventListener("click", async () => {
-    if (currentPath === "/") return;
-
-    history.push(currentPath);
-    await renderDirectory(parentPath(currentPath));
-  });
-
-  content.querySelector(".ranger-root").addEventListener("click", async () => {
-    history = [];
-    await renderDirectory("/");
-  });
-
-  await renderDirectory("/");
-  return true;
+  wer.win
 }
 
 export async function kill() {
