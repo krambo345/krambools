@@ -122,7 +122,7 @@ export async function kill() {
 
 export function commands() {
   return {
-    wer: {
+    bartender: {
       args: "<command>",
       description: "Window manager",
       sub: {
