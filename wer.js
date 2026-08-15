@@ -11,11 +11,8 @@ async function insertFunctions(win) {
   );
 
   header.querySelector(".wer-minimwin").addEventListener("click", async () => {
-    minimwin(header.closest(".wer-win"));
     await window.modOS.bartender?.update();
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-    }
+    minimwin(header.closest(".wer-win"));
   });
 
   header.querySelector(".wer-fullwin").addEventListener("click", async () => {
@@ -38,7 +35,6 @@ function windowz(e) {
 
 function minimwin(e) {
   e.style.display = "none";
-
   window.modOS.bartender?.update();
 }
 
@@ -55,7 +51,8 @@ function dragElement(element) {
   let initialY = 0;
 
   function startDragging(e) {
-    if (document.fullscreenElement == null) return;
+    if (document.fullscreenElement) return;
+
     windowz(element);
     e = e || window.event;
     e.preventDefault();
@@ -68,6 +65,11 @@ function dragElement(element) {
   }
 
   function onDrag(e) {
+    if (document.fullscreenElement) {
+      stopDragging();
+      return;
+    }
+
     e = e || window.event;
     e.preventDefault();
 
@@ -104,7 +106,9 @@ async function initwindow(win) {
 async function createWindow(pckg) {
   const win = document.createElement("div");
   const pckgs = await kernel.packer.fetch();
-  const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === pckg) : null;
+  const packageData = Array.isArray(pckgs)
+    ? pckgs.find((p) => p.id === pckg)
+    : null;
 
   win.className = "wer-win";
   win.dataset.windowicon = packageData ? packageData.icon : pckg;
@@ -120,26 +124,31 @@ async function createWindow(pckg) {
   win.appendChild(content);
 
   document.body.appendChild(win);
-  initwindow(win);
+  await initwindow(win);
+
   return win;
 }
 
 async function injectCSS() {
-  if (document.querySelector('style[data-krambools]')) return;
+  if (document.querySelector("style[data-krambools]")) return;
 
   try {
     const response = await fetch(
       "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
     );
+
     const css = await response.text();
     const style = document.createElement("style");
+
     style.dataset.krambools = "true";
     style.textContent = css;
+
     document.head.appendChild(style);
   } catch (error) {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
+
 export async function app(pckg) {
   if (observer) {
     observer.disconnect();
@@ -197,9 +206,9 @@ export function commands() {
         win: {
           args: "<pckg>",
           description: "Open a window for a package",
-          run: async ([pckg, tags]) => {
+          run: async ([pckg]) => {
             const win = await createWindow(pckg);
-            return win
+            return win;
           },
         },
       },
