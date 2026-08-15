@@ -135,6 +135,10 @@
 .xterm-screen {
   padding: 5px;
 }
+.xterm-screen:fullscreen{
+  height: 100%;
+  width: 100%;
+}
 
 .bartender-bar {
   display: grid;
@@ -233,4 +237,8 @@
 
 .editor-menu-option:hover {
   background: #ddd;
+}
+.editor-field:fullscreen{
+  height: 100%;
+  width: calc(100% - 60px);
 }

@@ -13,6 +13,9 @@ async function insertFunctions(win) {
   header.querySelector(".wer-minimwin").addEventListener("click", async () => {
     minimwin(header.closest(".wer-win"));
     await window.modOS.bartender?.update();
+    if (document.fullscreenElement) {
+      await document.exitFullscreen();
+    }
   });
 
   header.querySelector(".wer-fullwin").addEventListener("click", async () => {
@@ -52,6 +55,7 @@ function dragElement(element) {
   let initialY = 0;
 
   function startDragging(e) {
+    if (!document.fullscreenElement) return;
     windowz(element);
     e = e || window.event;
     e.preventDefault();

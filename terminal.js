@@ -17,19 +17,20 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-export async function app(){
-    await kill();
-    injectCSS();
-    const window = await wer.win("com.krambo345.terminal")
-    kernel.terminal.launch(window.querySelector(".wer-content"))
-    
-}
-export async function kill(){
-    document.querySelectorAll('.wer-win[data-pckg="com.krambo345.terminal"]').forEach((el) => {
-    window.closewin(el);
-    });
-    await kernel.terminal.kill();
+export async function app() {
+  await kill();
+  injectCSS();
 
+  const window = await wer.win("com.krambo345.terminal");
+  kernel.terminal.launch(window.querySelector(".wer-content"));
+}
+
+export async function kill() {
+  document
+    .querySelectorAll('.wer-win[data-pckg="com.krambo345.terminal"]')
+    .forEach((el) => el.remove());
+
+  await kernel.terminal.kill();
 }
 export async function commands(){
 }
