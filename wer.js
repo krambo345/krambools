@@ -36,6 +36,7 @@ function windowz(e) {
 function minimwin(e) {
   e.style.display = "none";
   window.modOS.bartender?.update();
+  document.exitFullscreen()
 }
 
 function closewin(e) {
