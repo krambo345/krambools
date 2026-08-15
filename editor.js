@@ -83,8 +83,6 @@ async function buildWindowMenu(win) {
 }
 async function editor(win){
     const field = document.createElement("textarea");
-    field.style.height = "400px";
-    field.style.width = "99%";
     field.style.resize = "none";
     field.className = "editor-field"
     win.appendChild(field)
