@@ -122,19 +122,14 @@ export async function kill() {
 
 export function commands() {
   return {
-    bartender: {
-      args: "<arg>",
-      description: "Bartender commands",
+    wer: {
+      args: "<command>",
+      description: "Window manager",
       sub: {
         update: {
           args: "",
-          description: "Update Bartender",
+          description: "Update bartender",
           run: async () => await updateBar() && await addMinimized(),
-        },
-        refresh: {
-          args: "",
-          description: "Refresh Bartender",
-          run: async () => await app(),
         },
       },
     },
