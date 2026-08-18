@@ -105,7 +105,7 @@ async function injectCSS() {
 }
 
 export async function app() {
-  const win = await wer.win("com.krambo345.ranger");
+  const win = await wer.win("com.krambo345.editor");
 
   if (win) {
     await buildWindowMenu(win);
