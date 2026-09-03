@@ -116,7 +116,6 @@ export async function app() {
 }
 
 export async function kill(win) {
-  win.remove();
   return true;
 }
 
