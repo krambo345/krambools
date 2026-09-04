@@ -202,7 +202,9 @@ async function buildWindowMenu(win) {
 }
 
 export async function app() {
-  wer.win
+  const window = await wer.win("com.krambo345.ranger");
+  buildWindowMenu(window);
+
 }
 
 export async function kill() {
