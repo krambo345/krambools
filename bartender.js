@@ -50,6 +50,7 @@ async function addMinimized() {
 
         icon.addEventListener("click", () => {
           win.style.display = "block";
+          buildBar();
           icon.remove();
         });
 
