@@ -404,3 +404,226 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.ranger-item.selected {
+  background: #0077ff55;
+}
+
+.wer-content {
+  position: relative;
+}
+
+/* Ranger file menu (mirrors .editor-menu-*) */
+.ranger-menu {
+  display: flex;
+  height: 30px;
+  background: #222;
+  color: #fff;
+  border-bottom: 1px solid #444;
+  flex-shrink: 0;
+}
+
+.ranger-menu-item {
+  position: relative;
+}
+
+.ranger-menu-button {
+  height: 100%;
+  border: none;
+  background: none;
+  color: #fff;
+  padding: 0 12px;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.ranger-menu-button:hover {
+  background: #333;
+}
+
+.ranger-menu-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 140px;
+  background: #222;
+  border: 1px solid #444;
+  z-index: 1002;
+}
+
+.ranger-menu-content.open {
+  display: flex;
+  flex-direction: column;
+}
+
+.ranger-menu-option {
+  border: none;
+  background: none;
+  text-align: left;
+  padding: 8px 12px;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.ranger-menu-option:hover {
+  background: #333;
+}
+
+/* Right-click context menu */
+.context-menu {
+  position: fixed;
+  min-width: 160px;
+  background: #222;
+  border: 1px solid #444;
+  color: #fff;
+  z-index: 2000;
+  box-shadow: 0 2px 8px #0008;
+}
+
+.context-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.context-menu li {
+  display: block;
+}
+
+.context-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 8px 14px;
+  border: none;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.context-menu button:hover {
+  background: #0077ff;
+}
+
+.context-menu button:disabled {
+  color: #777;
+  cursor: default;
+}
+
+.context-menu button:disabled:hover {
+  background: none;
+}
+
+/* In-window dialogs (replaces native prompt/alert/confirm) */
+.ranger-dialog-overlay {
+  position: absolute;
+  inset: 0;
+  background: #0009;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+}
+
+.ranger-dialog {
+  background: #222;
+  border: 1px solid #444;
+  padding: 16px;
+  width: 280px;
+  max-width: 90%;
+  box-sizing: border-box;
+  color: #fff;
+  font-family: monospace;
+}
+
+.ranger-dialog h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.ranger-dialog label {
+  display: block;
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+.ranger-dialog-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  margin-bottom: 12px;
+  background: #111;
+  border: 1px solid #555;
+  color: #fff;
+  font-family: monospace;
+}
+
+.ranger-dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.ranger-dialog-buttons button {
+  padding: 6px 12px;
+  border: 1px solid #555;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.ranger-dialog-buttons button:hover {
+  background: #444;
+}
+
+.ranger-dialog-ok {
+  background: #0077ff !important;
+  border-color: #0077ff !important;
+}
+
+.ranger-dialog-ok:hover {
+  background: #338fff !important;
+}
+
+/* Picker footer bar (Open / Save As flows) */
+.ranger-picker-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: #222;
+  border-top: 1px solid #444;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.ranger-picker-input {
+  flex: 1;
+  padding: 6px 8px;
+  background: #111;
+  border: 1px solid #555;
+  color: #fff;
+  font-family: monospace;
+}
+
+.ranger-picker-bar button {
+  padding: 6px 14px;
+  border: 1px solid #555;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.ranger-picker-bar button:hover {
+  background: #444;
+}
+
+.ranger-picker-bar button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

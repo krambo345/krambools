@@ -1,6 +1,99 @@
 const kernel = window.modOS.kernel;
 const wer = window.modOS.wer;
-const display = document.querySelector(".display");
+
+let currentWindow = null;
+let currentPath = null;
+let fieldEl = null;
+
+function parentOf(path) {
+  if (!path || path === "/") return "/";
+  const trimmed = path.endsWith("/") ? path.slice(0, -1) : path;
+  const idx = trimmed.lastIndexOf("/");
+  return idx <= 0 ? "/" : trimmed.slice(0, idx);
+}
+
+function baseNameOf(path) {
+  if (!path || path === "/") return "";
+  const trimmed = path.endsWith("/") ? path.slice(0, -1) : path;
+  return trimmed.slice(trimmed.lastIndexOf("/") + 1);
+}
+
+function updateTitle() {
+  if (!currentWindow) return;
+  const label = currentWindow.querySelector(".wer-winl span");
+  if (label) {
+    label.textContent = currentPath ? `Editor — ${baseNameOf(currentPath)}` : "Editor";
+  }
+}
+
+async function ensureRangerRunning() {
+  if (!window.modOS.ranger || typeof window.modOS.ranger.pick !== "function") {
+    await kernel.packer.start("com.krambo345.ranger");
+  }
+}
+
+async function loadFile(path) {
+  const data = kernel.bino.file.read(path);
+
+  if (data === undefined || typeof data !== "string") {
+    kernel.system.log("Unable to read file", "error");
+    return false;
+  }
+
+  if (fieldEl) fieldEl.value = data;
+  currentPath = path;
+  updateTitle();
+  return true;
+}
+
+function newFile() {
+  if (fieldEl) fieldEl.value = "";
+  currentPath = null;
+  updateTitle();
+}
+
+async function openFileFlow() {
+  await ensureRangerRunning();
+  const startDir = currentPath ? parentOf(currentPath) : "/";
+  const path = await window.modOS.ranger.pick("open", startDir);
+  if (path) await loadFile(path);
+}
+
+async function saveFile() {
+  if (!currentPath) {
+    return saveFileAs();
+  }
+
+  const result = kernel.bino.file.write(currentPath, fieldEl ? fieldEl.value : "");
+  if (result !== true) {
+    kernel.system.log("Unable to save file", "error");
+    return false;
+  }
+
+  kernel.system.log(`Saved ${currentPath}`, "success");
+  return true;
+}
+
+async function saveFileAs() {
+  await ensureRangerRunning();
+
+  const startDir = currentPath ? parentOf(currentPath) : "/";
+  const suggested = currentPath ? baseNameOf(currentPath) : "untitled.txt";
+
+  const path = await window.modOS.ranger.pick("save", startDir, suggested);
+  if (!path) return false;
+
+  const result = kernel.bino.file.write(path, fieldEl ? fieldEl.value : "");
+  if (result !== true) {
+    kernel.system.log("Unable to save file", "error");
+    return false;
+  }
+
+  currentPath = path;
+  updateTitle();
+  kernel.system.log(`Saved ${path}`, "success");
+  return true;
+}
 
 async function buildWindowMenu(win) {
   const menuBar = document.createElement("div");
@@ -55,38 +148,41 @@ async function buildWindowMenu(win) {
   });
 
   fileOptionNew.addEventListener("click", () => {
-    kernel.system.log("New file", "info");
+    newFile();
     fileContent.classList.remove("open");
   });
 
-  fileOptionOpen.addEventListener("click", () => {
-    kernel.system.log("Open file", "info");
+  fileOptionOpen.addEventListener("click", async () => {
     fileContent.classList.remove("open");
+    await openFileFlow();
   });
 
-  fileOptionSave.addEventListener("click", () => {
-    kernel.system.log("Save file", "info");
+  fileOptionSave.addEventListener("click", async () => {
     fileContent.classList.remove("open");
+    await saveFile();
   });
 
-  fileOptionSaveAs.addEventListener("click", () => {
-    kernel.system.log("Save As", "info");
+  fileOptionSaveAs.addEventListener("click", async () => {
     fileContent.classList.remove("open");
+    await saveFileAs();
   });
 
   fileOptionClose.addEventListener("click", () => {
-    kill(win);
+    kill();
     fileContent.classList.remove("open");
   });
 
   return menuBar;
 }
-async function editor(win){
-    const field = document.createElement("textarea");
-    field.style.resize = "none";
-    field.className = "editor-field"
-    win.appendChild(field)
+
+async function editor(win) {
+  const field = document.createElement("textarea");
+  field.style.resize = "none";
+  field.className = "editor-field";
+  win.appendChild(field);
+  fieldEl = field;
 }
+
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -105,33 +201,55 @@ async function injectCSS() {
 }
 
 export async function app() {
+  await injectCSS();
+
   const win = await wer.win("com.krambo345.editor");
+  currentWindow = win;
 
   if (win) {
     await buildWindowMenu(win);
     await editor(win);
+    updateTitle();
   }
 
   return true;
 }
 
-export async function kill(win) {
+export async function kill() {
+  if (currentWindow) {
+    currentWindow.remove();
+    currentWindow = null;
+  }
+
+  fieldEl = null;
+  currentPath = null;
+
   return true;
 }
 
 export async function commands() {
   return {
     editor: {
-      args: "<arg>",
+      args: "<command>",
       description: "Text editor",
       sub: {
+        open: {
+          args: "<path>",
+          description: "Open a file in the editor",
+          run: async ([path]) => {
+            if (!currentWindow) {
+              await app();
+            }
+            return await loadFile(path);
+          },
+        },
+
         test: {
           args: "<string>",
           description: "Log text to system",
-          run: async ([text]) =>
-            kernel.system.log(text, "warn")
-        }
-      }
-    }
+          run: async ([text]) => kernel.system.log(text, "warn"),
+        },
+      },
+    },
   };
 }
