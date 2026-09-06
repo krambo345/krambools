@@ -137,16 +137,18 @@
 
 .desktop {
   position: relative;
+  margin-top: 65px;
   height: calc(100% - 65px);
   width: 100%;
   padding: 16px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  grid-auto-rows: minmax(90px, auto);
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
+  grid-auto-columns: minmax(90px, 1fr);
   gap: 12px;
   box-sizing: border-box;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   align-content: start;
 }
 
@@ -550,6 +552,12 @@
   margin-bottom: 4px;
 }
 
+.ranger-dialog-message {
+  font-size: 13px;
+  color: #ddd;
+  margin: 0 0 14px;
+}
+
 .ranger-dialog-input {
   width: 100%;
   box-sizing: border-box;
@@ -587,6 +595,19 @@
 
 .ranger-dialog-ok:hover {
   background: #338fff !important;
+}
+
+.ranger-dialog-danger {
+  padding: 6px 12px;
+  border: 1px solid #d10000;
+  background: #d10000;
+  color: #fff;
+  cursor: pointer;
+  font-family: monospace;
+}
+
+.ranger-dialog-danger:hover {
+  background: #ff3030;
 }
 
 /* Picker footer bar (Open / Save As flows) */

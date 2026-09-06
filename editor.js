@@ -18,6 +18,10 @@ function baseNameOf(path) {
   return trimmed.slice(trimmed.lastIndexOf("/") + 1);
 }
 
+function isWindowLive(win) {
+  return Boolean(win) && document.body.contains(win);
+}
+
 function updateTitle() {
   if (!currentWindow) return;
   const label = currentWindow.querySelector(".wer-winl span");
@@ -237,7 +241,7 @@ export async function commands() {
           args: "<path>",
           description: "Open a file in the editor",
           run: async ([path]) => {
-            if (!currentWindow) {
+            if (!isWindowLive(currentWindow)) {
               await app();
             }
             return await loadFile(path);

@@ -210,6 +210,59 @@ function showDialog(win, { title, label, value = "", confirmText = "OK" }) {
   });
 }
 
+function showConfirm(win, { title, message, confirmText = "OK", danger = false }) {
+  return new Promise((resolve) => {
+    const overlay = document.createElement("div");
+    overlay.className = "ranger-dialog-overlay";
+
+    const box = document.createElement("div");
+    box.className = "ranger-dialog";
+
+    const heading = document.createElement("h3");
+    heading.textContent = title;
+
+    const message_ = document.createElement("p");
+    message_.className = "ranger-dialog-message";
+    message_.textContent = message;
+
+    const buttons = document.createElement("div");
+    buttons.className = "ranger-dialog-buttons";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Cancel";
+
+    const okBtn = document.createElement("button");
+    okBtn.className = danger ? "ranger-dialog-danger" : "ranger-dialog-ok";
+    okBtn.textContent = confirmText;
+
+    buttons.append(cancelBtn, okBtn);
+    box.append(heading, message_, buttons);
+    overlay.append(box);
+
+    win.querySelector(".wer-content").appendChild(overlay);
+
+    let settled = false;
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      document.removeEventListener("keydown", onKey);
+      overlay.remove();
+      resolve(result);
+    };
+
+    function onKey(e) {
+      if (e.key === "Escape") finish(false);
+      if (e.key === "Enter") finish(true);
+    }
+
+    okBtn.addEventListener("click", () => finish(true));
+    cancelBtn.addEventListener("click", () => finish(false));
+    document.addEventListener("keydown", onKey);
+
+    requestAnimationFrame(() => okBtn.focus());
+  });
+}
+
 // --- right-click context menu --------------------------------------------
 
 function closeContextMenu() {
@@ -603,6 +656,39 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     await render(state.path);
   }
 
+  async function deletePath(full, name, dir) {
+    const confirmed = await showConfirm(win, {
+      title: "Delete",
+      message: `Delete "${name}"? This cannot be undone.`,
+      confirmText: "Delete",
+      danger: true,
+    });
+    if (!confirmed) return;
+
+    try {
+      const result = dir ? kernel.bino.dir.delete(full) : kernel.bino.file.delete(full);
+      if (result !== true) {
+        kernel.system.log("Unable to delete", "error");
+        return;
+      }
+    } catch (error) {
+      kernel.system.log(
+        dir ? "Unable to delete folder (it may not be empty)" : `Unable to delete: ${error}`,
+        "error"
+      );
+      return;
+    }
+
+    if (state.selectedPath === full) {
+      state.selectedPath = null;
+      state.selectedName = null;
+      state.selectedIsDir = false;
+      updatePickerButton();
+    }
+
+    await render(state.path);
+  }
+
   function showEmptyContextMenu(x, y) {
     openContextMenu(x, y, [
       { label: "New File", action: () => createFile() },
@@ -618,6 +704,7 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     }
 
     items.push({ label: "Rename", action: () => renamePath(full, name, dir) });
+    items.push({ label: "Delete", action: () => deletePath(full, name, dir) });
 
     openContextMenu(x, y, items);
   }
