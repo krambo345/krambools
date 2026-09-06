@@ -4,6 +4,17 @@ const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
 
 let updateInterval = null;
+let saveInterval = null;
+
+async function performSave() {
+  const result = await kernel.account.update();
+  if (result) {
+    kernel.system.log("Data saved", "success");
+  } else {
+    kernel.system.log("Sign in to save your data", "warn");
+  }
+  return result;
+}
 
 async function buildBar() {
   const bar = document.createElement("div");
@@ -50,6 +61,7 @@ async function addMinimized() {
 
         icon.addEventListener("click", () => {
           win.style.display = "block";
+          buildBar();
           icon.remove();
         });
 
@@ -100,9 +112,7 @@ async function save() {
 
         img.src = `${kernel.base}icons/flop_drive.png`;
         label.innerHTML = "Save";
-        icon.addEventListener("click",
-          kernel.account.update()
-        );
+        icon.addEventListener("click", () => performSave());
 }
 export async function app() {
   await kill();
@@ -116,6 +126,10 @@ export async function app() {
     updateInterval = setInterval(async () => {
       await updateBar();
     }, 1000);
+
+    saveInterval = setInterval(async () => {
+      await performSave();
+    }, 5 * 60 * 1000);
   }
   catch (error) {
     return kernel.system.log(error, "error")
@@ -128,6 +142,11 @@ export async function kill() {
   if (updateInterval) {
     clearInterval(updateInterval);
     updateInterval = null;
+  }
+
+  if (saveInterval) {
+    clearInterval(saveInterval);
+    saveInterval = null;
   }
 
   const bar = document.querySelector(".bartender-bar");

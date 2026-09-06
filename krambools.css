@@ -143,13 +143,14 @@
   padding: 16px;
   display: grid;
   grid-auto-flow: column;
-  grid-template-rows: repeat(auto-fill, minmax(90px, 1fr));
-  grid-auto-columns: minmax(90px, 1fr);
+  grid-template-rows: repeat(auto-fill, 90px);
+  grid-auto-columns: 90px;
   gap: 12px;
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   align-content: start;
+  justify-content: start;
 }
 
 .desktop-icon {
@@ -415,7 +416,6 @@
   position: relative;
 }
 
-/* Ranger file menu (mirrors .editor-menu-*) */
 .ranger-menu {
   display: flex;
   height: 30px;
@@ -473,7 +473,6 @@
   background: #333;
 }
 
-/* Right-click context menu */
 .context-menu {
   position: fixed;
   min-width: 160px;
@@ -518,7 +517,6 @@
   background: none;
 }
 
-/* In-window dialogs (replaces native prompt/alert/confirm) */
 .ranger-dialog-overlay {
   position: absolute;
   inset: 0;
@@ -599,18 +597,17 @@
 
 .ranger-dialog-danger {
   padding: 6px 12px;
-  border: 1px solid #d10000;
-  background: #d10000;
+  border: 1px solid #d10000 !important;
+  background: #d10000 !important;
   color: #fff;
   cursor: pointer;
   font-family: monospace;
 }
 
 .ranger-dialog-danger:hover {
-  background: #ff3030;
+  background: #ff3030 !important;
 }
 
-/* Picker footer bar (Open / Save As flows) */
 .ranger-picker-bar {
   display: flex;
   align-items: center;

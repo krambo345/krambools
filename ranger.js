@@ -75,8 +75,6 @@ const iconMap = {
   bin: "bin.png",
 };
 
-// --- path helpers -----------------------------------------------------
-
 function joinPath(dir, name) {
   if (dir === "/" || dir === "") return `/${name}`;
   return `${dir.replace(/\/$/, "")}/${name}`;
@@ -114,8 +112,6 @@ function getIcon(name, directory) {
   return `${kernel.base}icons/${iconMap[ext] || "undefined.png"}`;
 }
 
-// --- shared css ---------------------------------------------------------
-
 async function injectCSS() {
   if (document.querySelector("style[data-krambools]")) return;
 
@@ -136,8 +132,6 @@ async function injectCSS() {
   }
 }
 
-// --- talk to the editor package ------------------------------------------
-
 async function openInEditor(path) {
   if (!window.modOS.editor || typeof window.modOS.editor.open !== "function") {
     await kernel.packer.start("com.krambo345.editor");
@@ -149,8 +143,6 @@ async function openInEditor(path) {
     kernel.system.log("Unable to open editor", "error");
   }
 }
-
-// --- in-window dialog (no native alert/prompt/confirm) --------------------
 
 function showDialog(win, { title, label, value = "", confirmText = "OK" }) {
   return new Promise((resolve) => {
@@ -263,8 +255,6 @@ function showConfirm(win, { title, message, confirmText = "OK", danger = false }
   });
 }
 
-// --- right-click context menu --------------------------------------------
-
 function closeContextMenu() {
   if (activeContextMenu) {
     activeContextMenu.remove();
@@ -326,8 +316,6 @@ function globalDocumentClick(e) {
 document.addEventListener("click", globalDocumentClick);
 document.addEventListener("contextmenu", () => closeContextMenu());
 
-// --- explorer / picker window --------------------------------------------
-
 function mkButton(text) {
   const button = document.createElement("button");
   button.type = "button";
@@ -383,8 +371,6 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     resolvePick?.(value);
   }
 
-  // -- file menu --
-
   const menuBar = document.createElement("div");
   menuBar.className = "ranger-menu";
 
@@ -418,8 +404,6 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     e.stopPropagation();
     fileContent.classList.toggle("open");
   });
-
-  // -- layout --
 
   const root = document.createElement("div");
   root.className = "ranger";
@@ -466,8 +450,6 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
   }
 
   content.append(menuBar, root);
-
-  // -- actions --
 
   async function render(path) {
     list.replaceChildren();
@@ -709,8 +691,6 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     openContextMenu(x, y, items);
   }
 
-  // -- wire toolbar / menu --
-
   backBtn.addEventListener("click", async () => {
     if (state.historyIndex <= 0) return;
     state.historyIndex--;
@@ -785,8 +765,6 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
 
   return await pickerPromise;
 }
-
-// --- package lifecycle -----------------------------------------------------
 
 export async function app() {
   await injectCSS();
