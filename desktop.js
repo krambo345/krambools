@@ -27,6 +27,7 @@ function buildIcon(pkg) {
   const img = document.createElement("img");
   const label = document.createElement("span");
   try {
+    if (!pkg.type == "cli") {
     desktop.appendChild(icon)
     icon.className = "desktop-icon";
     img.src = `${kernel.base}icons/${pkg.icon}.png`;
@@ -34,6 +35,7 @@ function buildIcon(pkg) {
 
     icon.appendChild(img);
     icon.appendChild(label);
+  }
   }
   catch (error) {
     return kernel.system.log(error, "error")
