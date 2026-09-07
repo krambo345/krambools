@@ -21,6 +21,18 @@ async function buildBar() {
   const barLeft = document.createElement("div");
   const barMiddle = document.createElement("div");
   const barRight = document.createElement("div");
+  const icon = document.createElement("div");
+  const img = document.createElement("img");
+  const label = document.createElement("span");
+
+  icon.className = "bartender-save";
+  icon.appendChild(img);
+  icon.appendChild(label);
+  barRight.appendChild(icon);
+
+  img.src = `${kernel.base}icons/flop_drive.png`;
+  label.innerHTML = "Save";
+  icon.addEventListener("click", () => performSave());
 
   try {
     display.appendChild(bar);
@@ -98,26 +110,9 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-async function save() {
-  const barRight = document.querySelector(".bartender-barRight");
-
-  const icon = document.createElement("div");
-  const img = document.createElement("img");
-  const label = document.createElement("span");
-
-  icon.className = "bartender-save";
-  icon.appendChild(img);
-  icon.appendChild(label);
-  barRight.appendChild(icon);
-
-  img.src = `${kernel.base}icons/flop_drive.png`;
-  label.innerHTML = "Save";
-  icon.addEventListener("click", () => performSave());
-}
 export async function app() {
   await kill();
   await injectCSS();
-  await save();
   try {
     await buildBar();
 
