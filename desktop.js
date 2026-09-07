@@ -23,40 +23,37 @@ async function injectCSS() {
 }
 
 function buildIcon(pkg) {
-  if (!pkg.type == "cli") {
-    const icon = document.createElement("div");
-    const img = document.createElement("img");
-    const label = document.createElement("span");
-    try {
-      desktop.appendChild(icon)
-      icon.className = "desktop-icon";
-      img.src = `${kernel.base}icons/${pkg.icon}.png`;
-      label.textContent = pkg.name;
+  const icon = document.createElement("div");
+  const img = document.createElement("img");
+  const label = document.createElement("span");
+  try {
+    desktop.appendChild(icon)
+    icon.className = "desktop-icon";
+    img.src = `${kernel.base}icons/${pkg.icon}.png`;
+    label.textContent = pkg.name;
 
-      icon.appendChild(img);
-      icon.appendChild(label);
-    }
-    catch (error) {
-      return kernel.system.log(error, "error")
-    }
-
-
-    icon.addEventListener("dblclick", async () => {
-      try {
-        if (!kernel) return;
-        const started = await kernel.packer.start(pkg.id);
-        if (!started) {
-          await kernel.system.log(`Failed to start ${pkg.id}`, "error");
-        }
-        window.modOS.bartender?.update();
-      } catch (error) {
-        if (kernel) kernel.system.log(error, "error");
-      }
-    });
-
-    return icon;
+    icon.appendChild(img);
+    icon.appendChild(label);
   }
-  return false;
+  catch (error) {
+    return kernel.system.log(error, "error")
+  }
+
+
+  icon.addEventListener("dblclick", async () => {
+    try {
+      if (!kernel) return;
+      const started = await kernel.packer.start(pkg.id);
+      if (!started) {
+        await kernel.system.log(`Failed to start ${pkg.id}`, "error");
+      }
+      window.modOS.bartender?.update();
+    } catch (error) {
+      if (kernel) kernel.system.log(error, "error");
+    }
+  });
+
+  return icon;
 }
 
 export async function app() {
@@ -77,7 +74,7 @@ export async function app() {
 
     installedIds.forEach((id) => {
       const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
-      if (!packageData) return;
+      if (!packageData || !packageData.type == "cli") return;
       fragment.appendChild(buildIcon(packageData));
     });
 
