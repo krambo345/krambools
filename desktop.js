@@ -74,7 +74,7 @@ export async function app() {
 
     installedIds.forEach((id) => {
       const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
-      if (!packageData || !packageData.type == "cli") return;
+      if (!packageData || packageData.type == "gui") return;
       fragment.appendChild(buildIcon(packageData));
     });
 
