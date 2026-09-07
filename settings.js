@@ -12,7 +12,8 @@ const structureUsr = variables.structureUsr;
 
 const DEFAULTS = {
   backgroundImage:
-  "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png",
+    "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png",
+  splash: false,
   borderColor: "#0077ff",
   fontColor: "#000000",
   fontFamily: "Fira Code",
@@ -25,9 +26,9 @@ const DEFAULTS = {
 
 const FONT_CHOICES = [
   "Fira Code",
-"Arial",
-"Times New Roman",
-"Courier New"
+  "Arial",
+  "Times New Roman",
+  "Courier New"
 ];
 
 let currentWindow = null;
@@ -120,6 +121,10 @@ function injectLocalCSS() {
     box-sizing: border-box;
     background: #fff;
     color: #000;
+  }
+  .settings-checkbox {
+    width: 18px;
+    height: 18px;
   }
   .settings-color-input {
     width: 44px;
@@ -268,6 +273,7 @@ function fillCustomizationDefaults(custom) {
     borderColor: normalizeHex(source.borderColor, DEFAULTS.borderColor),
     fontColor: normalizeHex(source.fontColor, DEFAULTS.fontColor),
     fontFamily: source.fontFamily || DEFAULTS.fontFamily,
+    splash: typeof source.splash === "boolean" ? source.splash : DEFAULTS.splash,
     buttons: {
       minimize: normalizeHex(buttons.minimize, DEFAULTS.buttons.minimize),
       maximize: normalizeHex(buttons.maximize, DEFAULTS.buttons.maximize),
@@ -486,20 +492,20 @@ async function renderCustomizationTab(container) {
     "Window Border Color",
     custom.borderColor,
     (val) => applyCustomizationStyles({ ...liveCustomization, borderColor: val }),
-                                  async (val) => {
-                                    liveCustomization = { ...liveCustomization, borderColor: val };
-                                    liveCustomization = await saveCustomization({ borderColor: val });
-                                  }
+    async (val) => {
+      liveCustomization = { ...liveCustomization, borderColor: val };
+      liveCustomization = await saveCustomization({ borderColor: val });
+    }
   );
 
   const fontColorRow = buildColorRow(
     "Font Color",
     custom.fontColor,
     (val) => applyCustomizationStyles({ ...liveCustomization, fontColor: val }),
-                                     async (val) => {
-                                       liveCustomization = { ...liveCustomization, fontColor: val };
-                                       liveCustomization = await saveCustomization({ fontColor: val });
-                                     }
+    async (val) => {
+      liveCustomization = { ...liveCustomization, fontColor: val };
+      liveCustomization = await saveCustomization({ fontColor: val });
+    }
   );
 
   const fontRow = document.createElement("div");
@@ -527,7 +533,21 @@ async function renderCustomizationTab(container) {
     applyCustomizationStyles(liveCustomization);
     liveCustomization = await saveCustomization({ fontFamily: fontSelect.value });
   });
+  const splashRow = document.createElement("div");
+  splashRow.className = "settings-row";
+  const splashLabel = document.createElement("span");
+  splashLabel.className = "settings-row-label";
+  splashLabel.textContent = "modOS Splash";
+  const splashCheckbox = document.createElement("input");
+  splashCheckbox.type = "checkbox";
+  splashCheckbox.className = "settings-checkbox";
+  splashCheckbox.checked = custom.splash;
 
+  splashRow.append(splashLabel, splashCheckbox);
+  splashCheckbox.addEventListener("change", async () => {
+    liveCustomization = { ...liveCustomization, splash: splashCheckbox.checked };
+    liveCustomization = await saveCustomization({ splash: splashCheckbox.checled });
+  })
   const btnHeading = document.createElement("h3");
   btnHeading.className = "settings-subheading";
   btnHeading.textContent = "Window Buttons";
@@ -536,10 +556,10 @@ async function renderCustomizationTab(container) {
     "Minimize Button",
     custom.buttons.minimize,
     (val) =>
-    applyCustomizationStyles({
-      ...liveCustomization,
-      buttons: { ...liveCustomization.buttons, minimize: val },
-    }),
+      applyCustomizationStyles({
+        ...liveCustomization,
+        buttons: { ...liveCustomization.buttons, minimize: val },
+      }),
     async (val) => {
       liveCustomization = {
         ...liveCustomization,
@@ -553,10 +573,10 @@ async function renderCustomizationTab(container) {
     "Maximize Button",
     custom.buttons.maximize,
     (val) =>
-    applyCustomizationStyles({
-      ...liveCustomization,
-      buttons: { ...liveCustomization.buttons, maximize: val },
-    }),
+      applyCustomizationStyles({
+        ...liveCustomization,
+        buttons: { ...liveCustomization.buttons, maximize: val },
+      }),
     async (val) => {
       liveCustomization = {
         ...liveCustomization,
@@ -570,10 +590,10 @@ async function renderCustomizationTab(container) {
     "Close Button",
     custom.buttons.close,
     (val) =>
-    applyCustomizationStyles({
-      ...liveCustomization,
-      buttons: { ...liveCustomization.buttons, close: val },
-    }),
+      applyCustomizationStyles({
+        ...liveCustomization,
+        buttons: { ...liveCustomization.buttons, close: val },
+      }),
     async (val) => {
       liveCustomization = {
         ...liveCustomization,
@@ -601,6 +621,7 @@ async function renderCustomizationTab(container) {
     borderRow,
     fontColorRow,
     fontRow,
+    splashRow,
     btnHeading,
     minimizeRow,
     maximizeRow,
