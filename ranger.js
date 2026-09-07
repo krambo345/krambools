@@ -348,12 +348,12 @@ async function createExplorerWindow(mode = "normal", opts = {}) {
     mode === "normal"
       ? null
       : new Promise((resolve) => {
-          resolvePick = (value) => {
-            resolve(value);
-            pendingResolvers.delete(resolvePick);
-          };
-          pendingResolvers.add(resolvePick);
-        });
+        resolvePick = (value) => {
+          resolve(value);
+          pendingResolvers.delete(resolvePick);
+        };
+        pendingResolvers.add(resolvePick);
+      });
 
   function closeWindow() {
     if (settled) return;

@@ -61,8 +61,8 @@ async function addMinimized() {
 
         icon.addEventListener("click", () => {
           win.style.display = "block";
-          buildBar();
           icon.remove();
+          addMinimized();
         });
 
         minimized++;
@@ -101,23 +101,23 @@ async function injectCSS() {
 async function save() {
   const barRight = document.querySelector(".bartender-barRight");
 
-        const icon = document.createElement("div");
-        const img = document.createElement("img");
-        const label = document.createElement("span");
+  const icon = document.createElement("div");
+  const img = document.createElement("img");
+  const label = document.createElement("span");
 
-        icon.className = "bartender-save";
-        icon.appendChild(img);
-        icon.appendChild(label);
-        barRight.appendChild(icon);
+  icon.className = "bartender-save";
+  icon.appendChild(img);
+  icon.appendChild(label);
+  barRight.appendChild(icon);
 
-        img.src = `${kernel.base}icons/flop_drive.png`;
-        label.innerHTML = "Save";
-        icon.addEventListener("click", () => performSave());
+  img.src = `${kernel.base}icons/flop_drive.png`;
+  label.innerHTML = "Save";
+  icon.addEventListener("click", () => performSave());
 }
 export async function app() {
   await kill();
   await injectCSS();
-
+  await save();
   try {
     await buildBar();
 
