@@ -23,39 +23,40 @@ async function injectCSS() {
 }
 
 function buildIcon(pkg) {
-  const icon = document.createElement("div");
-  const img = document.createElement("img");
-  const label = document.createElement("span");
-  try {
-    if (!pkg.type == "cli") {
-    desktop.appendChild(icon)
-    icon.className = "desktop-icon";
-    img.src = `${kernel.base}icons/${pkg.icon}.png`;
-    label.textContent = pkg.name;
-
-    icon.appendChild(img);
-    icon.appendChild(label);
-  }
-  }
-  catch (error) {
-    return kernel.system.log(error, "error")
-  }
-
-
-  icon.addEventListener("dblclick", async () => {
+  if (!pkg.type == "cli") {
+    const icon = document.createElement("div");
+    const img = document.createElement("img");
+    const label = document.createElement("span");
     try {
-      if (!kernel) return;
-      const started = await kernel.packer.start(pkg.id);
-      if (!started) {
-        await kernel.system.log(`Failed to start ${pkg.id}`, "error");
-      }
-      window.modOS.bartender?.update();
-    } catch (error) {
-      if (kernel) kernel.system.log(error, "error");
-    }
-  });
+      desktop.appendChild(icon)
+      icon.className = "desktop-icon";
+      img.src = `${kernel.base}icons/${pkg.icon}.png`;
+      label.textContent = pkg.name;
 
-  return icon;
+      icon.appendChild(img);
+      icon.appendChild(label);
+    }
+    catch (error) {
+      return kernel.system.log(error, "error")
+    }
+
+
+    icon.addEventListener("dblclick", async () => {
+      try {
+        if (!kernel) return;
+        const started = await kernel.packer.start(pkg.id);
+        if (!started) {
+          await kernel.system.log(`Failed to start ${pkg.id}`, "error");
+        }
+        window.modOS.bartender?.update();
+      } catch (error) {
+        if (kernel) kernel.system.log(error, "error");
+      }
+    });
+
+    return icon;
+  }
+  return false;
 }
 
 export async function app() {
@@ -84,7 +85,7 @@ export async function app() {
       desktop.appendChild(fragment);
     }
   }
-  catch (error){
+  catch (error) {
     return kernel.system.log(error, "error")
   }
 
