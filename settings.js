@@ -21,23 +21,25 @@ async function injectCSS() {
   } catch (error) {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
-  async function applyCSS(property) {
-    let style = document.querySelector("style[data-krambools-css]");
-    if (!style) {
-      style = document.createElement("style");
-      style.dataset.kramboolsCSS = true;
-      document.head.appendChild(style);
-    }
-
-    Object.assign(cssVars, property);
-
-    const declarations = Object.entries(cssVars)
-      .map(([key, value]) => `  ${key}: ${value};`)
-      .join("\n");
-
-    style.textContent = `:root {\n${declarations}\n}`;
-  }
 }
+
+async function applyCSS(property) {
+  let style = document.querySelector("style[data-krambools-css]");
+  if (!style) {
+    style = document.createElement("style");
+    style.dataset.kramboolsCSS = true;
+    document.head.appendChild(style);
+  }
+
+  Object.assign(cssVars, property);
+
+  const declarations = Object.entries(cssVars)
+    .map(([key, value]) => `  ${key}: ${value};`)
+    .join("\n");
+
+  style.textContent = `:root {\n${declarations}\n}`;
+}
+
 
 function readSettings() {
   try {
@@ -113,7 +115,7 @@ function registerTab(win, tabName, buttonLabel) {
   return tabPages[tabName];
 }
 
-function switchTab(win, tabName) {
+function switchTab(tabName) {
   Object.entries(tabPages).forEach(([name, { page, btn }]) => {
     const isActive = name === tabName;
     page.style.display = isActive ? "block" : "none";
@@ -161,14 +163,105 @@ export async function app() {
   base(window);
 
   addInputs(
-    "color",
-    "Window Border",
+    "url",
+    "Background(link)",
     window,
     "customization",
-    (value) => applyCSS({ "--border-color": value }),
-    "winBorder",
+    (value) => applyCSS({ "--backgroundImage": `url('${value}')` }),
+    "backgroundImage",
+    "url('https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png')"
+  );
+
+  addInputs(
+    "color",
+    "Window Border Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowBorderColor": value }),
+    "winBorderColor",
     "#0077ff"
   );
+
+  addInputs(
+    "number",
+    "Window Border Radius",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowBorderRadius": `${value}px` }),
+    "windowBorderRadius",
+    "5px"
+  );
+
+  addInputs(
+    "color",
+    "Bartender Background Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--bartenderBackgroundColor": value }),
+    "bartenderBackgroundColor",
+    "#1a1a1adc"
+  );
+
+  addInputs(
+    "color",
+    "Bartender Font Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--bartebderTextColor": value }),
+    "bartenderTextColor",
+    "#fff"
+  );
+
+  addInputs(
+    "color",
+    "Desktop Label Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--desktopLabelColor": value }),
+    "desktopLabelColor",
+    "#fff"
+  );
+
+  addInputs(
+    "color",
+    "Default Font Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--defaultColor": value }),
+    "defaultColor",
+    "#000"
+  );
+  addInputs(
+    "color",
+    "Close Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowClose": value }),
+    "windowClose",
+    "#d10000"
+  );
+
+  addInputs(
+    "color",
+    "Minimize Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowMinim": value }),
+    "windowMinim",
+    "#d1d100"
+  );
+
+  addInputs(
+    "color",
+    "Fullscreen Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowFull": value }),
+    "windowFull",
+    "#41b000"
+  );
+
+
 
   addInputs(
     "checkbox",

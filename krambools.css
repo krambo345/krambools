@@ -1,15 +1,17 @@
-:root {
-  --border-color: #0077ff;
-  --font-color: #000000;
-  --font-family: inherit;
-  --btn-minimize: #d1d100;
-  --btn-maximize: #41b000;
-  --btn-close: #d10000;
-  --bg-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
+:root{
+  --windowBorderColor: #0077ff;
+  --windowBorderRadius: 5px;
+  --bartenderTextColor: #fff;
+  --bartenderBackgroundColor: #1a1a1adc;
+  --desktopLabelColor:#fff;
+  --defaultColor #000;
+  --backgroundImage: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
+  --windowClose: #d10000;;
+  --windowMinim: #d1d100;
+  --windowFull: #41b000;
 }
-
 .display {
-  background-image: var(--bg-image);
+  background-image: var(--backgroundImage);
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
@@ -18,7 +20,7 @@
 
 .wer-win {
   position: absolute;
-  border: solid var(--border-color) 5px;
+  border: solid var(--windowBorderColor) var(--windowBorderRadius);
   background-color: #ffffff9a;
   display: inline-block;
   width: 800px;
@@ -30,8 +32,7 @@
   transform: translate(-50%, -50%);
   backdrop-filter: blur(3px);
   transition: backdrop-filter, background-color 0.4s;
-  color: var(--font-color);
-  font-family: var(--font-family);
+  color: #000;
   box-sizing: border-box;
 }
 
@@ -81,7 +82,7 @@
   align-items: center;
   height: 30px;
   min-height: 30px;
-  background-color: var(--border-color);
+  background-color: var(--windowBorderColor);
   color: #fff;
   display: flex;
   flex-shrink: 0;
@@ -98,7 +99,7 @@
   width: 15px;
   background: none;
   border: none;
-  background-color: var(--btn-maximize);
+  background-color: var(--windowFull);
 }
 
 .wer-fullwin:hover {
@@ -111,7 +112,7 @@
   width: 15px;
   background: none;
   border: none;
-  background-color: var(--btn-minimize);
+  background-color: var(--windowMinim);
 }
 
 .wer-minimwin:hover {
@@ -124,7 +125,7 @@
   width: 30px;
   background: none;
   border: none;
-  background-color: var(--btn-close);
+  background-color: var(--windowClose);
 }
 
 .wer-closewin:hover {
@@ -171,7 +172,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  color: #fff;
+  color: var(--desktopLabelColor);
   border-radius: 6px;
   box-sizing: border-box;
 }
@@ -187,8 +188,19 @@
   word-break: break-word;
   overflow-wrap: anywhere;
 }
-
 .xterm-screen {
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.wer-win:fullscreen .xterm,
+.wer-win:fullscreen .xterm-viewport,
+.wer-win:fullscreen .xterm-screen {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
   padding: 5px;
   box-sizing: border-box;
 }
@@ -221,8 +233,8 @@
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   box-sizing: border-box;
-  background-color: #1a1a1adc;
-  color: #fff;
+  background-color: var(--bartenderBackgroundColor);
+  color: var(--bartenderTextColor);
   backdrop-filter: blur(3px);
   padding: 15px;
   position: absolute;
@@ -605,25 +617,6 @@
   background: #444;
 }
 
-.ranger-dialog-ok {
-  background: #0077ff !important;
-  border-color: #0077ff !important;
-}
-
-.ranger-dialog-ok:hover {
-  background: #338fff !important;
-}
-
-.ranger-dialog-danger {
-  padding: 6px 12px;
-  border: 1px solid #d10000 !important;
-  background: #d10000 !important;
-  color: #fff;
-  cursor: pointer;
-  font-family: monospace;
-}
-
-.ranger-dialog-danger:hover {
   background: #ff3030 !important;
 }
 
@@ -664,76 +657,11 @@
   opacity: 0.5;
   cursor: default;
 }
-
-.settings-menu {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  padding: 8px;
-  background: #f2f2f2;
-  border-bottom: 1px solid #ccc;
-  box-sizing: border-box;
+.settings-menu{
+  width=175px;
+  height=350px;
 }
-
-.settings-tabButton {
-  padding: 6px 14px;
-  border: 1px solid #ccc;
-  background: #fff;
-  color: #000;
-  cursor: pointer;
-  font-family: inherit;
-  border-radius: 4px 4px 0 0;
-}
-
-.settings-tabButton:hover {
-  background: #eaf3ff;
-}
-
-.settings-tabButton.active {
-  background: var(--border-color);
-  color: #fff;
-  border-color: var(--border-color);
-}
-
-.settings-page {
-  padding: 16px;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-
-.settings-tabPage {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.settings-tabPage label {
-  font-size: 13px;
-  color: #333;
-  margin-bottom: 4px;
-  display: block;
-}
-
-.settings-tabPage input[type="text"],
-.settings-tabPage input[type="color"],
-.settings-tabPage input[type="url"],
-.settings-tabPage input[type="number"] {
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-}
-
-.settings-tabPage input[type="color"] {
-  padding: 2px;
-  width: 60px;
-  height: 30px;
-  cursor: pointer;
-}
-
-.settings-tabPage input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--border-color);
-  cursor: pointer;
+.settings-page{
+  width=450px;
+  height=350px;
 }
