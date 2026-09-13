@@ -325,11 +325,11 @@ export async function kill() {
 
 export async function commands() {
   return {
-    settomgs: {
-      args: "load",
+    settings: {
+      args: "<arg>",
       description: "load settings from server",
-      load: {
-        test: {
+      sub: {
+        load: {
           arg: "",
           description: "load settings from server",
           run: async () => applyAllSettings(),

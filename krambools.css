@@ -667,12 +667,15 @@
   border-radius: 5px;
   background-color: #0077ff;
   font-size: 16px;
+  color: #fff;
 }
 .settings-page{
   display: grid;
   grid-template-rows: repeat(auto-fill, 1fr);
   width: 450px;
   height: 350px;
+  overflow-y: auto;
+  overflow-x: auto;
 }
 .settings-inpHold{
   width: 100%;
