@@ -323,14 +323,14 @@ export async function kill() {
   activeTab = null;
 }
 
-export async function commands() {
+export function commands() {
   return {
     settings: {
       args: "<arg>",
       description: "load settings from server",
       sub: {
         load: {
-          arg: "",
+          args: "",
           description: "load settings from server",
           run: async () => applyAllSettings(),
         },
@@ -338,3 +338,4 @@ export async function commands() {
     },
   };
 }
+

@@ -678,7 +678,8 @@
   overflow-x: auto;
 }
 .settings-inpHold{
-  width: 100%;
+  width: 450px;
+  padding: 2px;
 }
 .settings-inpHold:nth-child(even){
   background-color: #f0f0f0;
