@@ -1,6 +1,7 @@
 :root{
   --windowBorderColor: #0077ff;
   --windowBorderRadius: 5px;
+  --windowTextColor: #fff;
   --bartenderTextColor: #fff;
   --bartenderBackgroundColor: #1a1a1adc;
   --desktopLabelColor:#fff;
@@ -84,8 +85,7 @@
   height: 30px;
   min-height: 30px;
   background-color: var(--windowBorderColor);
-  border-radius: var(--windowBorderRadius);
-  color: #fff;
+  color: var(--windowTextColor);
   display: flex;
   flex-shrink: 0;
 }
@@ -661,7 +661,13 @@
 }
 .settings-menu{
   width: 175px;
-  height: 350px;
+  height: 30px;
+}
+.settings-menu button{
+  border: none;
+  border-radius: 5px;
+  background-color: #0077ff;
+  font-size: 16px;
 }
 .settings-page{
   display: grid;

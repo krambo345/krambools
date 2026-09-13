@@ -131,7 +131,8 @@ async function addInputs(type, label, win, parentTab, func, key, fallback) {
   const inputHold = document.createElement("div");
   const lbl = document.createElement("label");
   const inp = document.createElement("input");
-  inputHold.appendChild(lbl, inp);
+  inputHold.append(lbl, inp);
+  inputHold.className = "settings-inpHold";
   lbl.innerHTML = label;
   inp.type = type;
 
@@ -174,6 +175,16 @@ export async function app() {
   );
 
   addInputs(
+    "url",
+    "Background(link)",
+    window,
+    "customization",
+    (value) => applyCSS({ "--backgroundImage": `url('${value}')` }),
+    "backgroundImage",
+    "url('https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png')"
+  );
+
+  addInputs(
     "color",
     "Window Border Color",
     window,
@@ -191,6 +202,46 @@ export async function app() {
     (value) => applyCSS({ "--windowBorderRadius": `${value}px` }),
     "windowBorderRadius",
     "5px"
+  );
+
+  addInputs(
+    "color",
+    "Window Text Color",
+    window,
+    "parentTab",
+    (value) => applyCSS({ "--windowTextColor": value }),
+    "windowTextColor",
+    true
+  );
+
+  addInputs(
+    "color",
+    "Close Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowClose": value }),
+    "windowClose",
+    "#d10000"
+  );
+
+  addInputs(
+    "color",
+    "Minimize Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowMinim": value }),
+    "windowMinim",
+    "#d1d100"
+  );
+
+  addInputs(
+    "color",
+    "Fullscreen Button Color",
+    window,
+    "customization",
+    (value) => applyCSS({ "--windowFull": value }),
+    "windowFull",
+    "#41b000"
   );
 
   addInputs(
@@ -232,37 +283,6 @@ export async function app() {
     "defaultColor",
     "#000"
   );
-  addInputs(
-    "color",
-    "Close Button Color",
-    window,
-    "customization",
-    (value) => applyCSS({ "--windowClose": value }),
-    "windowClose",
-    "#d10000"
-  );
-
-  addInputs(
-    "color",
-    "Minimize Button Color",
-    window,
-    "customization",
-    (value) => applyCSS({ "--windowMinim": value }),
-    "windowMinim",
-    "#d1d100"
-  );
-
-  addInputs(
-    "color",
-    "Fullscreen Button Color",
-    window,
-    "customization",
-    (value) => applyCSS({ "--windowFull": value }),
-    "windowFull",
-    "#41b000"
-  );
-
-
 
   addInputs(
     "checkbox",
@@ -271,16 +291,6 @@ export async function app() {
     "customization",
     (value) => kernel.system.log("Splash set to " + value, "info"),
     "splash",
-    true
-  );
-
-  addInputs(
-    "checkbox",
-    "label",
-    window,
-    "parentTab",
-    (value) => kernel.system.log("example function"),
-    "key",
     true
   );
 }
