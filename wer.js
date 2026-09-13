@@ -1,4 +1,5 @@
 const kernel = window.modOS.kernel;
+const display = document.querySelector(".display");
 let zlast = 1;
 let observer = null;
 
@@ -110,7 +111,7 @@ async function createWindow(pckg) {
   const packageData = Array.isArray(pckgs)
     ? pckgs.find((p) => p.id === pckg)
     : null;
-
+  display.appendChild(win);
   win.className = "wer-win";
   win.dataset.windowicon = packageData ? packageData.icon : pckg;
   win.dataset.windowname = packageData ? packageData.name : pckg;
