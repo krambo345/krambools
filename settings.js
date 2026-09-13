@@ -1,6 +1,30 @@
 const kernel = window.modOS.kernel;
 const wer = window.modOS.wer;
 
+const settingHandlers = {
+  backgroundImage: (value) => applyCSS({ "--backgroundImage": `url('${value}')` }),
+  winBorderColor: (value) => applyCSS({ "--windowBorderColor": value }),
+  windowBorderRadius: (value) => applyCSS({ "--windowBorderRadius": `${value}px` }),
+  windowTextColor: (value) => applyCSS({ "--windowTextColor": value }),
+  windowClose: (value) => applyCSS({ "--windowClose": value }),
+  windowMinim: (value) => applyCSS({ "--windowMinim": value }),
+  windowFull: (value) => applyCSS({ "--windowFull": value }),
+  bartenderBackgroundColor: (value) => applyCSS({ "--bartenderBackgroundColor": value }),
+  bartenderTextColor: (value) => applyCSS({ "--bartebderTextColor": value }),
+  desktopLabelColor: (value) => applyCSS({ "--desktopLabelColor": value }),
+  defaultColor: (value) => applyCSS({ "--defaultColor": value }),
+  splash: (value) => kernel.system.log("Splash set to " + value, "info"),
+};
+
+function applyAllSettings() {
+  const settings = readSettings();
+  Object.entries(settings).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === "") return;
+    const handler = settingHandlers[key];
+    if (handler) handler(value);
+  });
+}
+
 const usrSettingsLoc = "/usr/settings.json";
 const structureUsr = "/usr";
 
@@ -39,7 +63,6 @@ async function applyCSS(property) {
 
   style.textContent = `:root {\n${declarations}\n}`;
 }
-
 
 function readSettings() {
   try {
@@ -208,7 +231,7 @@ export async function app() {
     "color",
     "Window Text Color",
     window,
-    "parentTab",
+    "customization",
     (value) => applyCSS({ "--windowTextColor": value }),
     "windowTextColor",
     true
@@ -302,14 +325,14 @@ export async function kill() {
 
 export async function commands() {
   return {
-    template: {
-      args: "<arg>",
-      description: "Demonstrate commands",
-      sub: {
+    settomgs: {
+      args: "load",
+      description: "load settings from server",
+      load: {
         test: {
-          arg: "<string>",
-          description: "Log text to system",
-          run: async ([text]) => kernel.system.log(text, "warn"),
+          arg: "",
+          description: "load settings from server",
+          run: async () => applyAllSettings(),
         },
       },
     },
