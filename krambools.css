@@ -1,5 +1,15 @@
+:root {
+  --border-color: #0077ff;
+  --font-color: #000000;
+  --font-family: inherit;
+  --btn-minimize: #d1d100;
+  --btn-maximize: #41b000;
+  --btn-close: #d10000;
+  --bg-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
+}
+
 .display {
-  background-image: url("https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png");
+  background-image: var(--bg-image);
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
@@ -8,7 +18,7 @@
 
 .wer-win {
   position: absolute;
-  border: solid #0077ff 5px;
+  border: solid var(--border-color) 5px;
   background-color: #ffffff9a;
   display: inline-block;
   width: 800px;
@@ -20,7 +30,8 @@
   transform: translate(-50%, -50%);
   backdrop-filter: blur(3px);
   transition: backdrop-filter, background-color 0.4s;
-  color: #000;
+  color: var(--font-color);
+  font-family: var(--font-family);
   box-sizing: border-box;
 }
 
@@ -70,7 +81,7 @@
   align-items: center;
   height: 30px;
   min-height: 30px;
-  background-color: #0077ff;
+  background-color: var(--border-color);
   color: #fff;
   display: flex;
   flex-shrink: 0;
@@ -87,7 +98,7 @@
   width: 15px;
   background: none;
   border: none;
-  background-color: #41b000;
+  background-color: var(--btn-maximize);
 }
 
 .wer-fullwin:hover {
@@ -100,7 +111,7 @@
   width: 15px;
   background: none;
   border: none;
-  background-color: #d1d100;
+  background-color: var(--btn-minimize);
 }
 
 .wer-minimwin:hover {
@@ -113,7 +124,7 @@
   width: 30px;
   background: none;
   border: none;
-  background-color: #d10000;
+  background-color: var(--btn-close);
 }
 
 .wer-closewin:hover {
@@ -176,6 +187,7 @@
   word-break: break-word;
   overflow-wrap: anywhere;
 }
+
 .xterm-screen {
   padding: 5px;
   box-sizing: border-box;
@@ -253,7 +265,8 @@
   border: 3px solid #55d3ff;
   cursor: var(--cursor-pointer);
 }
-.bartender-save{
+
+.bartender-save {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -262,10 +275,12 @@
   border: 3px solid #ffffff00;
   padding: 3px;
 }
+
 .bartender-save:hover {
   border: 3px solid #55d3ff;
   cursor: var(--cursor-pointer);
 }
+
 .editor-menu {
   display: flex;
   height: 30px;
@@ -311,20 +326,24 @@
 .editor-menu-option:hover {
   background: #ddd;
 }
-.editor-field{
+
+.editor-field {
   height: 400px;
   width: 99%;
   border: none;
 }
-.editor-field::selection{
+
+.editor-field::selection {
   border: none;
 }
+
 .editor-field:fullscreen {
   width: 100%;
   height: calc(100% - 60px);
   top: 0;
   left: 0;
 }
+
 .ranger {
   display: flex;
   flex-direction: column;
@@ -644,4 +663,77 @@
 .ranger-picker-bar button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+.settings-menu {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  padding: 8px;
+  background: #f2f2f2;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.settings-tabButton {
+  padding: 6px 14px;
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #000;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 4px 4px 0 0;
+}
+
+.settings-tabButton:hover {
+  background: #eaf3ff;
+}
+
+.settings-tabButton.active {
+  background: var(--border-color);
+  color: #fff;
+  border-color: var(--border-color);
+}
+
+.settings-page {
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.settings-tabPage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-tabPage label {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.settings-tabPage input[type="text"],
+.settings-tabPage input[type="color"],
+.settings-tabPage input[type="url"],
+.settings-tabPage input[type="number"] {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.settings-tabPage input[type="color"] {
+  padding: 2px;
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.settings-tabPage input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--border-color);
+  cursor: pointer;
 }

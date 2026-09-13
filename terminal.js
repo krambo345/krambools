@@ -32,5 +32,5 @@ export async function kill() {
 
   await kernel.terminal.kill();
 }
-export async function commands(){
+export async function commands() {
 }

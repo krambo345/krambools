@@ -18,28 +18,28 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-export async function app(){
-    injectCSS();
-    const window = await wer.win("com.krambo345.template") // Part of the com.krambo345.wer package
-    window.querySelector(".wer-content").innerHTML = `
+export async function app() {
+  injectCSS();
+  const window = await wer.win("com.krambo345.template") // Part of the com.krambo345.wer package
+  window.querySelector(".wer-content").innerHTML = `
         <h1>This is an example application running in a window</h1>
     `
 }
-export async function kill(){
+export async function kill() {
 }
-export async function commands(){
-    return{
-        template:{
-            args:"<arg>",
-            description:"Demonstrate commands",
-            sub:{
-                test:{
-                    arg:"<string>",
-                    description:"Log text to system",
-                    run: async([text]) =>
-                        kernel.system.log(text, "warn")
-                }
-            }
+export async function commands() {
+  return {
+    template: {
+      args: "<arg>",
+      description: "Demonstrate commands",
+      sub: {
+        test: {
+          arg: "<string>",
+          description: "Log text to system",
+          run: async ([text]) =>
+            kernel.system.log(text, "warn")
         }
+      }
     }
+  }
 }
