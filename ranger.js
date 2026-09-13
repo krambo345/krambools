@@ -133,9 +133,7 @@ async function injectCSS() {
 }
 
 async function openInEditor(path) {
-  if (!window.modOS.editor || typeof window.modOS.editor.open !== "function") {
-    await kernel.packer.start("com.krambo345.editor");
-  }
+  await kernel.packer.start("com.krambo345.editor")
 
   if (window.modOS.editor && typeof window.modOS.editor.open === "function") {
     await window.modOS.editor.open(path);

@@ -58,6 +58,7 @@ function writeSettings(obj) {
   try {
     kernel.bino.dir.make(structureUsr);
     kernel.bino.file.write(usrSettingsLoc, JSON.stringify(obj, null, 2));
+    kernel.account.updateSettings();
     return true;
   } catch (error) {
     kernel.system.log(`Failed to write settings: ${error}`, "error");
@@ -115,7 +116,7 @@ function registerTab(win, tabName, buttonLabel) {
   return tabPages[tabName];
 }
 
-function switchTab(tabName) {
+function switchTab(win, tabName) {
   Object.entries(tabPages).forEach(([name, { page, btn }]) => {
     const isActive = name === tabName;
     page.style.display = isActive ? "block" : "none";
@@ -127,9 +128,10 @@ function switchTab(tabName) {
 async function addInputs(type, label, win, parentTab, func, key, fallback) {
   const tab = registerTab(win, parentTab);
   const container = tab.page;
-
+  const inputHold = document.createElement("div");
   const lbl = document.createElement("label");
   const inp = document.createElement("input");
+  inputHold.appendChild(lbl, inp);
   lbl.innerHTML = label;
   inp.type = type;
 
@@ -148,8 +150,7 @@ async function addInputs(type, label, win, parentTab, func, key, fallback) {
     func(value, key);
   });
 
-  container.appendChild(lbl);
-  container.appendChild(inp);
+  container.appendChild(inputHold);
 }
 
 export async function app() {

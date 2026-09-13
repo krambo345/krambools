@@ -20,7 +20,8 @@
 
 .wer-win {
   position: absolute;
-  border: solid var(--windowBorderColor) var(--windowBorderRadius);
+  border: solid var(--windowBorderColor) 5px;
+  border-radius: var(--windowBorderRadius);
   background-color: #ffffff9a;
   display: inline-block;
   width: 800px;
@@ -32,7 +33,7 @@
   transform: translate(-50%, -50%);
   backdrop-filter: blur(3px);
   transition: backdrop-filter, background-color 0.4s;
-  color: #000;
+  color: var(--defaultColor);
   box-sizing: border-box;
 }
 
@@ -83,6 +84,7 @@
   height: 30px;
   min-height: 30px;
   background-color: var(--windowBorderColor);
+  border-radius: var(--windowBorderRadius);
   color: #fff;
   display: flex;
   flex-shrink: 0;
@@ -658,10 +660,21 @@
   cursor: default;
 }
 .settings-menu{
-  width=175px;
-  height=350px;
+  width: 175px;
+  height: 350px;
 }
 .settings-page{
-  width=450px;
-  height=350px;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 1fr);
+  width: 450px;
+  height: 350px;
+}
+.settings-inpHold{
+  width: 100%;
+}
+.settings-inpHold:nth-child(even){
+  background-color: #f0f0f0;
+}
+.settings-inpHold:nth-child(odd){
+  background-color: #fff;
 }
