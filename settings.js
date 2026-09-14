@@ -317,16 +317,18 @@ export async function app() {
     true
   );
 }
-
 export async function kill() {
-  Object.keys(tabPages).forEach((k) => delete tabPages[k]);
-  activeTab = null;
+  document
+    .querySelectorAll('.wer-win[data-pckg="com.krambo345.settings"]')
+    .forEach((el) => el.remove());
+
+  await kernel.terminal.kill();
 }
 
 export function commands() {
   return {
     settings: {
-      args: "<arg>",
+      args: "<command>",
       description: "load settings from server",
       sub: {
         load: {
