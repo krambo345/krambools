@@ -198,16 +198,6 @@ export async function app() {
   );
 
   addInputs(
-    "url",
-    "Background(link)",
-    window,
-    "customization",
-    (value) => applyCSS({ "--backgroundImage": `url('${value}')` }),
-    "backgroundImage",
-    "url('https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png')"
-  );
-
-  addInputs(
     "color",
     "Window Border Color",
     window,
@@ -321,8 +311,6 @@ export async function kill() {
   document
     .querySelectorAll('.wer-win[data-pckg="com.krambo345.settings"]')
     .forEach((el) => el.remove());
-
-  await kernel.terminal.kill();
 }
 
 export function commands() {
@@ -340,4 +328,5 @@ export function commands() {
     },
   };
 }
+
 

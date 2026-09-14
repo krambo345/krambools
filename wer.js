@@ -111,7 +111,6 @@ async function createWindow(pckg) {
   const packageData = Array.isArray(pckgs)
     ? pckgs.find((p) => p.id === pckg)
     : null;
-  display.appendChild(win);
   win.className = "wer-win";
   win.dataset.windowicon = packageData ? packageData.icon : pckg;
   win.dataset.windowname = packageData ? packageData.name : pckg;
@@ -125,7 +124,7 @@ async function createWindow(pckg) {
   content.className = "wer-content";
   win.appendChild(content);
 
-  document.body.appendChild(win);
+  display.appendChild(win);
   await initwindow(win);
 
   return win;
