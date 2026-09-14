@@ -30,33 +30,21 @@ const structureUsr = "/usr";
 
 const cssVars = {};
 async function injectCSS() {
-  if (document.querySelector("style[data-krambools]")) return true;
+  if (document.querySelector('style[data-krambools]')) return;
 
   try {
-    if (kernel.bino.file.check("/packages/krambools.css")) {
-      const response = await fetch(
-        "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
-      );
-
-      const css = await response.text();
-
-      kernel.bino.file.write("/packages/krambools.css", css);
-    }
-
-    const css = kernel.bino.file.read("/packages/krambools.css");
-
+    const response = await fetch(
+      "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/krambools.css"
+    );
+    const css = await response.text();
     const style = document.createElement("style");
     style.dataset.krambools = "true";
     style.textContent = css;
     document.head.appendChild(style);
-
-    return true;
   } catch (error) {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
-    return false;
   }
 }
-
 async function applyCSS(property) {
   let style = document.querySelector("style[data-krambools-css]");
   if (!style) {
