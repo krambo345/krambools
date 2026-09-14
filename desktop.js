@@ -6,6 +6,8 @@ const desktop = document.createElement("div");
 display.appendChild(desktop)
 desktop.className = "desktop"
 async function injectCSS() {
+  if (document.querySelector("style[data-krambools-css]")) return true;
+
   try {
     if (!kernel.bino.file.check("/packages/krambools.css")) {
       const response = await fetch(

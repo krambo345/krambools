@@ -2,6 +2,8 @@ const kernel = window.modOS.kernel;
 const wer = window.modOS.wer;
 const display = document.querySelector(".display");
 async function injectCSS() {
+  if (document.querySelector("style[data-krambools-css]")) return true;
+
   try {
     if (!kernel.bino.file.check("/packages/krambools.css")) {
       const response = await fetch(

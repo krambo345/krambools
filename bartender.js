@@ -94,6 +94,7 @@ async function updateBar() {
   barMiddle.innerHTML = `${month} ${date.getDate()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
 }
 async function injectCSS() {
+  if (document.querySelector("style[data-krambools-css]")) return true;
   try {
     if (!kernel.bino.file.check("/packages/krambools.css")) {
       const response = await fetch(

@@ -112,6 +112,8 @@ function getIcon(name, directory) {
   return `${kernel.base}icons/${iconMap[ext] || "undefined.png"}`;
 }
 async function injectCSS() {
+  if (document.querySelector("style[data-krambools-css]")) return true;
+
   try {
     if (!kernel.bino.file.check("/packages/krambools.css")) {
       const response = await fetch(
