@@ -146,7 +146,7 @@ function switchTab(win, tabName) {
   activeTab = tabName;
 }
 
-async function addInputs(type, label, win, parentTab, func, key, fallback) {
+async function addInputs(type, label, win, parentTab, func, key, fallback, onclick) {
   const tab = registerTab(win, parentTab);
   const container = tab.page;
   const inputHold = document.createElement("div");
@@ -154,7 +154,11 @@ async function addInputs(type, label, win, parentTab, func, key, fallback) {
   const inp = document.createElement("input");
   inputHold.append(lbl, inp);
   inputHold.className = "settings-inpHold";
-  lbl.innerHTML = label;
+  if (type == "button") {
+    inp.value = label;
+  } else {
+    lbl.innerHTML = label;
+  }
   inp.type = type;
 
   if (key !== undefined) {
@@ -164,6 +168,10 @@ async function addInputs(type, label, win, parentTab, func, key, fallback) {
     } else {
       inp.value = current;
     }
+  }
+  if (onclick != undefined) {
+    const clickedFunction = new Function(onclick);
+    inp.addEventListener("click", clickedFunction());
   }
 
   inp.addEventListener("change", (e) => {
@@ -192,7 +200,7 @@ export async function app() {
     "customization",
     (value) => applyCSS({ "--backgroundImage": `url('${value}')` }),
     "backgroundImage",
-    "url('https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png')"
+    "https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png"
   );
 
   addInputs(

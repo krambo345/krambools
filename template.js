@@ -1,7 +1,6 @@
 // Template or Example Package
 const kernel = window.modOS.kernel;
 const wer = window.modOS.wer; // Part of the com.krambo345.wer package
-const display = document.querySelector(".display");
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 

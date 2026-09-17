@@ -1,6 +1,5 @@
 const kernel = window.modOS.kernel;
 const wer = window.modOS.wer;
-const display = document.querySelector(".display");
 async function injectCSS() {
   if (document.querySelector('style[data-krambools]')) return;
 
@@ -18,7 +17,6 @@ async function injectCSS() {
   }
 }
 export async function app() {
-  await kill();
   injectCSS();
 
   const window = await wer.win("com.krambo345.terminal");
@@ -29,8 +27,7 @@ export async function kill() {
   document
     .querySelectorAll('.wer-win[data-pckg="com.krambo345.terminal"]')
     .forEach((el) => el.remove());
-
-  await kernel.terminal.kill();
 }
 export async function commands() {
 }
+

@@ -21,12 +21,12 @@ async function injectCSS() {
     kernel.system.log(`Failed to inject CSS: ${error}`, "error");
   }
 }
-function buildIcon(pkg) {
+function buildIcon(pkg, container) {
   const icon = document.createElement("div");
   const img = document.createElement("img");
   const label = document.createElement("span");
   try {
-    desktop.appendChild(icon)
+    container.appendChild(icon)
     icon.className = "desktop-icon";
     img.src = `${kernel.base}icons/${pkg.icon}.png`;
     label.textContent = pkg.name;
@@ -62,6 +62,7 @@ export async function app() {
     desktop.replaceChildren();
   }
   try {
+    const iconContainer = document.createElement("div");
     const installed = await kernel.bino.dir.list(structurePackages);
     const installedIds = Array.isArray(installed) ? installed : [];
 
@@ -74,7 +75,7 @@ export async function app() {
     installedIds.forEach((id) => {
       const packageData = Array.isArray(pckgs) ? pckgs.find((p) => p.id === id) : null;
       if (!packageData || packageData.type == "cli") return;
-      fragment.appendChild(buildIcon(packageData));
+      fragment.appendChild(buildIcon(packageData, iconContainer));
     });
 
     if (desktop) {

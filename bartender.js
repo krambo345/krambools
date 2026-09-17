@@ -1,6 +1,4 @@
 const kernel = window.modOS.kernel;
-const structurePackages = window.modOS.variables.structurePackages;
-const libJSONloc = window.modOS.variables.libJSONloc;
 const display = document.querySelector(".display");
 
 let updateInterval = null;
