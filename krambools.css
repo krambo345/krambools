@@ -10,6 +10,9 @@
   --windowClose: #d10000;;
   --windowMinim: #d1d100;
   --windowFull: #41b000;
+  --errorNotification: #d10000;
+  --warningNotification: #d1d100;
+  --normNotification: #41b000;
 }
 .display {
   background-image: var(--backgroundImage);
@@ -23,7 +26,7 @@
   position: absolute;
   border: solid var(--windowBorderColor) 5px;
   border-radius: var(--windowBorderRadius);
-  background-color: #ffffff9a;
+  background-color: #fff;
   display: inline-block;
   width: 800px;
   min-width: 250px;
@@ -32,8 +35,6 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  backdrop-filter: blur(3px);
-  transition: backdrop-filter, background-color 0.4s;
   color: var(--defaultColor);
   box-sizing: border-box;
 }
@@ -70,15 +71,6 @@
   box-sizing: border-box;
 }
 
-.wer-win:hover {
-  backdrop-filter: blur(0);
-  background-color: #ffffff;
-}
-
-.wer-win:fullscreen:hover {
-  background-color: #ffffff9a;
-  backdrop-filter: blur(3px);
-}
 
 .wer-winheader {
   align-items: center;
@@ -687,3 +679,28 @@
 .settings-inpHold:nth-child(odd){
   background-color: #fff;
 }
+.noty{
+  width: 250px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.noty-error{
+  background-color: var(--errorNotification);
+  color: #fff;
+  border: solid var(--windowBorderColor) 5px;
+  border-radius: var(--windowBorderRadius) 3px;
+}
+.noty-warning{
+  background-color: var(--warningNotification);
+  color: #fff;
+  border: solid var(--windowBorderColor) 5px;
+  border-radius: var(--windowBorderRadius) 3px;
+}
+.noty-normal{
+  background-color: var(--normNotification);
+  color: #fff;
+  border: solid var(--windowBorderColor) 5px;
+  border-radius: var(--windowBorderRadius) 3px;
+}
+

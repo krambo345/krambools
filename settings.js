@@ -15,7 +15,65 @@ const settingHandlers = {
   defaultColor: (value) => applyCSS({ "--defaultColor": value }),
   splash: (value) => kernel.system.log("Splash set to " + value, "info"),
 };
-
+const themes = [
+  {
+    name: "sevda",
+    vars: {
+      "--windowBorderColor": "#0077ff",
+      "--windowBorderRadius": "5px",
+      "--windowTextColor": "#ffffff",
+      "--bartenderTextColor": "#ffffff",
+      "--bartenderBackgroundColor": "#1a1a1adc",
+      "--desktopLabelColor": "#ffffff",
+      "--defaultColor": "#000000",
+      "--backgroundImage": "url('https://raw.githubusercontent.com/krambo345/krambools/refs/heads/master/sevda.png')",
+      "--windowClose": "#d10000",
+      "--windowMinim": "#d1d100",
+      "--windowFull": "#41b000",
+      "--errorNotification": "#d10000",
+      "--warningNotification": "#d1d100",
+      "--normNotification": "#41b000"
+    }
+  },
+  {
+    name: "modern",
+    vars: {
+      "--windowBorderColor": "#E2833B",
+      "--windowBorderRadius": "8px",
+      "--windowTextColor": "#F5F2EF",
+      "--bartenderTextColor": "#F5F2EF",
+      "--bartenderBackgroundColor": "#2D323Adc",
+      "--desktopLabelColor": "#F5F2EF",
+      "--defaultColor": "#2B1D16",
+      "--backgroundImage": "url('https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9')",
+      "--windowClose": "#DA5343",
+      "--windowMinim": "#EBA338",
+      "--windowFull": "#5E9873",
+      "--errorNotification": "#DA5343",
+      "--warningNotification": "#EBA338",
+      "--normNotification": "#5E9873"
+    }
+  },
+  {
+    name: "template",
+    vars: {
+      "--windowBorderColor": "#ff007f",
+      "--windowBorderRadius": "0px",
+      "--windowTextColor": "#00ffff",
+      "--bartenderTextColor": "#00ffff",
+      "--bartenderBackgroundColor": "#0d0221dc",
+      "--desktopLabelColor": "#00ffff",
+      "--defaultColor": "#00ffff",
+      "--backgroundImage": "none",
+      "--windowClose": "#ff0055",
+      "--windowMinim": "#ffcc00",
+      "--windowFull": "#00ff66",
+      "--errorNotification": "#ff0055",
+      "--warningNotification": "#ffcc00",
+      "--normNotification": "#00ff66"
+    }
+  }
+];
 function applyAllSettings() {
   const settings = readSettings();
   Object.entries(settings).forEach(([key, value]) => {
@@ -161,7 +219,7 @@ async function addInputs(type, label, win, parentTab, func, key, fallback, oncli
   }
   inp.type = type;
 
-  if (key !== undefined) {
+  if (key !== undefined && type !== "button") {
     const current = getSetting(key, fallback);
     if (type === "checkbox") {
       inp.checked = !!current;
@@ -173,12 +231,13 @@ async function addInputs(type, label, win, parentTab, func, key, fallback, oncli
     const clickedFunction = new Function(onclick);
     inp.addEventListener("click", clickedFunction());
   }
-
-  inp.addEventListener("change", (e) => {
-    const value = type === "checkbox" ? e.target.checked : e.target.value;
-    if (key !== undefined) setSetting(key, value);
-    func(value, key);
-  });
+  if (func !== undefined) {
+    inp.addEventListener("change", (e) => {
+      const value = type === "checkbox" ? e.target.checked : e.target.value;
+      if (key !== undefined) setSetting(key, value);
+      func(value, key);
+    });
+  }
 
   container.appendChild(inputHold);
 }
@@ -312,6 +371,20 @@ export async function app() {
     "splash",
     true
   );
+  addInputs(
+    "text",
+    "Startup Packages",
+    window,
+    "startup",
+    (value) => kernel.system.log("Startup list and order set to " + value, "info"),
+    "startup",
+    `[ 
+      "com.krambo345.wer",
+      "com.krambo345.bartender",
+      "com.krambo345.desktop"
+  ]`
+  );
+
 }
 export async function kill() {
   document
@@ -330,6 +403,32 @@ export function commands() {
           description: "load settings from server",
           run: async () => applyAllSettings(),
         },
+        set: {
+          args: "<key> <value>",
+          description: "Set setting",
+          run: async (key, value) => {
+            applyCSS({ [key]: value })
+          }
+        },
+        theme: {
+          args: "<theme>",
+          description: "Apply a theme",
+          run: async (themeName) => {
+            try {
+              const selectedTheme = themes[themeName] || themes.find(t => t.name === themeName);
+
+              await applyCSS(selectedTheme.vars);
+
+              Object.entries(selectedTheme.vars).forEach(([varName, value]) => {
+                setSetting(varName, value);
+              });
+
+              kernel.system.log(`Applied theme successfully`, "info");
+            } catch (error) {
+              kernel.system.log(`Failed to apply theme: ${error.message}`, "error");
+            }
+          }
+        }
       },
     },
   };
